@@ -1,4 +1,6 @@
-all: main_naif main_exo1 clean #Game_SortingRobot Checker_SortingRobot
+CFLAGS=-Wall -g
+
+all: Game_SortingRobot Checker_SortingRobot main_exo1 main_naif clean
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -27,19 +29,19 @@ Checker_SortingRobot: Checker_SortingRobot.o  API_AffGrille.o Grille.o Solution.
 
 
 exo1.o: exo1.c exo1.h
-	gcc exo1.c -o exo.o -lm 
+	gcc $(CFLAGS) -c exo1.c
 
 main_exo1.o: main_exo1.c
-	gcc -c main_exo1.c 
+	gcc $(CFLAGS) -c main_exo1.c
 	
 main_exo1: main_exo1.o exo1.o Solution.o entree_sortie.o
-	gcc -o main_exo1 main_exo1.o exo1.o Solution.o entree_sortie.o
+	gcc $(CFLAGS) -o main_exo1 main_exo1.o exo1.o Solution.o entree_sortie.o -lm
 	
 main_naif.o: main_naif.c
-	gcc -c main_naif.c 
+	gcc $(CFLAGS) -c main_naif.c
 	
 main_naif: main_naif.o exo1.o Solution.o Grille.o entree_sortie.o
-	gcc -o main_naif main_naif.o exo1.o Solution.o Grille.o entree_sortie.o
+	gcc $(CFLAGS) -o main_naif main_naif.o exo1.o Solution.o Grille.o entree_sortie.o -lm
 	
 	
 

@@ -50,9 +50,12 @@ int getCouleurPieceRobot(Grille *G){
 	return G->T[G->ir][G->jr].robot ;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// retourne la distance entre les points (i,j) et (k,l)
 double distance(int i, int j, int k, int l){
-    return sqrt((k-i)*(k-i)+(l-j)*(l-j)*1.0);
+    return sqrt( (k-i)*(k-i)+(l-j)*(l-j)*1.0 );
 }
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) la plus proche de la case
 // (i,j) et dont la couleur est c, (-1,-1) si elle n'existe pas
