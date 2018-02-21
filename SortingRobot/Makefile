@@ -35,7 +35,7 @@ main_exo1.o: main_exo1.c
 	gcc $(CFLAGS) -c main_exo1.c
 	
 main_exo1: main_exo1.o exo1.o Solution.o entree_sortie.o
-	gcc $(CFLAGS) -o main_exo1 main_exo1.o exo1.o Solution.o entree_sortie.o -lm
+	gcc $(CFLAGS) -o main_exo1 main_exo1.o exo1.o Solution.o Grille.o entree_sortie.o -lm
 	
 main_naif.o: main_naif.c
 	gcc $(CFLAGS) -c main_naif.c

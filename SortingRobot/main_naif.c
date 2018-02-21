@@ -23,7 +23,7 @@ int main(){
 
 	algorithme_naif( &G, &S);
 
-	if (G.cptr_noire==G.n*G.m){
+	if (G.cptr_noire==G.n*G.m || 1){
 		printf("\nL'algorithme a gagne en %d pas\n",S.cptr_pas);
 		printf("\nEcriture de la solution sur disque\n\n");
 		Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
