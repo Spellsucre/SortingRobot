@@ -12,9 +12,9 @@ int main(){
 	Solution S;
 	Solution_init(&S);
 
-	G.m=4;
-	G.n=4;
-	G.nbcoul=4;
+	G.m=10;
+	G.n=10;
+	G.nbcoul=100;
 	int graine=1;
 
 
