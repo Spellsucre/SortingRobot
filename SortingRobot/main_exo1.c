@@ -7,12 +7,7 @@
 
 int main(){
 
-	Solution S;
-	Solution_init(&S);
 	
-	PlusCourtChemin(&S, 2, 3, 0, 0);
-
-    Affiche(&S);
 
 	return 0;
 }

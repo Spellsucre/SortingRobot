@@ -15,7 +15,9 @@ int robotPortePiece(Grille *G);
 
 int getCouleurPieceRobot(Grille *G);
 
-double distance(int i, int j, int k, int l);
+int getCouleurCase(Grille *G, int i, int j);
+
+int estDansGrille(Grille *G, int i, int j);
 
 void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l);
 
