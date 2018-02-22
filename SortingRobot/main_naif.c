@@ -6,17 +6,33 @@
 #include "Grille.h"
 #include "Solution.h"
 
-int main(){
+int main(int argc, char** argv){
     
 	Grille G;
 	Solution S;
 	Solution_init(&S);
+	int graine;
 
-	G.m=10;
-	G.n=10;
-	G.nbcoul=100;
-	int graine=1;
+    if(argc!=5){
+        printf("usage: %s <nb_lignes nb_colonnes nb_couleur graine>\n",argv[0]);
+        return 1;
+    }
 
+    G.m=atoi(argv[1]);
+    G.n=atoi(argv[2]);
+    
+    if (G.m>G.n){
+        printf("Il doit y avoir plus de colonnes que de lignes.\n");
+        exit(1);
+    }
+      
+    G.nbcoul=atoi(argv[3]);  
+    if (G.nbcoul>G.m*G.n){
+        printf("Il ne doit pas y avoir plus de couleurs que de cases.\n");
+        exit(1);
+    }
+  
+    graine=atoi(argv[4]);
 
 	Grille_allocation(&G);
 	Gene_Grille(&G, graine);
