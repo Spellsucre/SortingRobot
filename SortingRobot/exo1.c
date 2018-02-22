@@ -15,19 +15,24 @@ void PlusCourtChemin(Solution *S, int i, int j, int k, int l){
 	char deplacementx, deplacementy;
 	
 	d = k-i;
-	if (d<0) deplacementx='U';
-	else if (d>0) deplacementx='D';
-	for (q=0; q<abs(d); q++) Ajout_action(S, deplacementx);
+	if (d<0) deplacementy='U';
+	else if (d>0) deplacementy='D';
+	for (q=0; q<abs(d); q++) Ajout_action(S, deplacementy);
+		
 	
 	d = l-j;
-	if (d<0) deplacementy='L';
-	else if (d>0) deplacementy='R';
-	for (q=0; q<abs(d); q++) Ajout_action(S, deplacementy);
+	if (d<0) deplacementx='L';
+	else if (d>0) deplacementx='R';
+	for (q=0; q<abs(d); q++) Ajout_action(S, deplacementx);
+	
+	//printf("(%d,%d) -> (%d,%d)\n", i,j,k,l);
+	//Affiche(S);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // retourne 1 si la case (i,j) est noire, 0 sinon
 int caseNoire(Grille *G, int i, int j){
+	//printf("dbg caseNoire (%d,%d)\n", i, j);
 	return G->T[i][j].fond == G->T[i][j].piece ;
 }
 
@@ -35,12 +40,14 @@ int caseNoire(Grille *G, int i, int j){
 // retourne 1 si la pièce en (i,j) est noire, 0 sinon
 int pieceNoire(Grille *G, int i, int j){
 	//pas de pièce => absence de couleur => noir
+	//printf("dbg pieceNoire (%d,%d)\n\n", i, j);
 	return G->T[i][j].piece == -1 ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // retourne 1 si le robot porte une pièce, 0 sinon
 int robotPortePiece(Grille *G){
+	//printf("dbg robotPortePiece (%d,%d) = %d\n", G->ir, G->jr, G->T[G->ir][G->jr].robot >= 0);
 	return G->T[G->ir][G->jr].robot >= 0 ;
 }
 
@@ -53,12 +60,14 @@ int getCouleurPieceRobot(Grille *G){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // reourne la couleur de la case (i,j)
 int getCouleurCase(Grille *G, int i, int j){
+	//printf("dbg getCouleurCase (%d,%d)\n\n", i, j);
 	return G->T[i][j].fond;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // retourne 1 si (i,j) est contenu dans la grille
 int estDansGrille(Grille *G, int i, int j){
+	//printf("dbg estDansGrille (%d,%d)\n", i, j);
 	if ( i<0 || j<0 || i>=G->m || j>=G->n ) return 0;
 	return 1;
 }
@@ -72,32 +81,38 @@ void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l){
 	//d_max est la longeur de la diagonale de la grille
 	//d_max = (int) sqrt( pow(G->m,2) + pow(G->n,2) ); 
 	
+	//x, j, l : col
+	//y, i, k : lig
+	
 	for (d=0; d<G->m*G->n; d++){
-		
+		//printf("c_d = %d\n", d);
 		//case du haut
 		h=0;
-		x = i;
-		y = j-d;
-		if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-				&& getCouleurCase(G,x,y)==c ){
-			*k=x; *l=y;
+		x = j;
+		y = i-d;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& getCouleurCase(G,y,x)==c ){
+			*k=y; *l=x;
 			return;
 		}
+		
+		if (d==0) continue;
+		
 		h++;
 	
 		//couple cases intermédiare haut
 		while (h<d){
 			y++;
-			x=i-h;
-			if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-					&& getCouleurCase(G,x,y)==c ){
-				*k=x; *l=y;
+			x=j-h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& getCouleurCase(G,y,x)==c ){
+				*k=y; *l=x;
 				return;
 			}
-			x=i+h;
-			if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-					&& getCouleurCase(G,x,y)==c ){
-				*k=x; *l=y;
+			x=j+h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& getCouleurCase(G,y,x)==c ){
+				*k=y; *l=x;
 				return;
 			}
 			h++;
@@ -105,16 +120,16 @@ void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l){
 	
 		//couple cases milieu
 		y++;
-		x=i-h;
-		if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-				&& getCouleurCase(G,x,y)==c ){
-			*k=x; *l=y;
+		x=j-h;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& getCouleurCase(G,y,x)==c ){
+			*k=y; *l=x;
 			return;
 		}
-		x=i+h;
-		if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-				&& getCouleurCase(G,x,y)==c ){
-			*k=x; *l=y;
+		x=j+h;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& getCouleurCase(G,y,x)==c ){
+			*k=y; *l=x;
 			return;
 		}
 		h--;
@@ -122,27 +137,27 @@ void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l){
 		//couple cases intermédiare bas
 		while (h>0){
 			y++;
-			x=i-h;
-			if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-					&& getCouleurCase(G,x,y)==c ){
-				*k=x; *l=y;
+			x=j-h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& getCouleurCase(G,y,x)==c ){
+				*k=y; *l=x;
 				return;
 			}
-			x=i+h;
-			if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-					&& getCouleurCase(G,x,y)==c ){
-				*k=x; *l=y;
+			x=j+h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& getCouleurCase(G,y,x)==c ){
+				*k=y; *l=x;
 				return;
 			}
 			h--;
 		}
 	
 		//case du bas
-		x = i;
+		x = j;
 		y = d;
-		if ( estDansGrille(G,x,y) && !caseNoire(G,x,y)
-				&& getCouleurCase(G,x,y)==c ){
-			*k=x; *l=y;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& getCouleurCase(G,y,x)==c ){
+			*k=y; *l=x;
 			return;
 		}
 		
@@ -160,31 +175,34 @@ void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
 	
 	
 	for (d=0; d<G->m*G->n; d++){
-		
+		//printf("nn_d = %d\n", d);
 		//case du haut
 		h=0;
-		x = i;
-		y = j-d;
-		if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-				&& !pieceNoire(G, x, y) ){
-			*k=x; *l=y;
+		x = j;
+		y = i-d;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& !pieceNoire(G,y,x) ){
+			*k=y; *l=x;
 			return;
 		}
+		
+		if (d==0) continue;
+		
 		h++;
 	
 		//couple cases intermédiare haut
 		while (h<d){
 			y++;
-			x=i-h;
-			if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-					&& !pieceNoire(G, x, y) ){
-				*k=x; *l=y;
+			x=j-h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& !pieceNoire(G,y,x) ){
+				*k=y; *l=x;
 				return;
 			}
-			x=i+h;
-			if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-					&& !pieceNoire(G, x, y) ){
-				*k=x; *l=y;
+			x=j+h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& !pieceNoire(G,y,x) ){
+				*k=y; *l=x;
 				return;
 			}
 			h++;
@@ -192,16 +210,16 @@ void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
 	
 		//couple cases milieu
 		y++;
-		x=i-h;
-		if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-				&& !pieceNoire(G, x, y) ){
-			*k=x; *l=y;
+		x=j-h;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& !pieceNoire(G,y,x) ){
+			*k=y; *l=x;
 			return;
 		}
-		x=i+h;
-		if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-				&& !pieceNoire(G, x, y) ){
-			*k=x; *l=y;
+		x=j+h;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& !pieceNoire(G,y,x) ){
+			*k=y; *l=x;
 			return;
 		}
 		h--;
@@ -209,27 +227,27 @@ void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
 		//couple cases intermédiare bas
 		while (h>0){
 			y++;
-			x=i-h;
-			if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-					&& !pieceNoire(G, x, y) ){
-				*k=x; *l=y;
+			x=j-h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& !pieceNoire(G,y,x) ){
+				*k=y; *l=x;
 				return;
 			}
-			x=i+h;
-			if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-					&& !pieceNoire(G, x, y) ){
-				*k=x; *l=y;
+			x=j+h;
+			if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+					&& !pieceNoire(G,y,x) ){
+				*k=y; *l=x;
 				return;
 			}
 			h--;
 		}
 	
 		//case du bas
-		x = i;
+		x = j;
 		y = d;
-		if ( estDansGrille(G, x, y) && !caseNoire(G, x, y)
-				&& !pieceNoire(G, x, y) ){
-			*k=x; *l=y;
+		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
+				&& !pieceNoire(G,y,x) ){
+			*k=y; *l=x;
 			return;
 		}
 		
@@ -243,23 +261,16 @@ void algorithme_naif(Grille *G, Solution *S){
     
     while (G->cptr_noire < G->m * G->n){
     	
-    	//si le robot n'a pas de piece, il va prendre celle la plus proche
-        if( !robotPortePiece(G) ){            
-            RechercherCaseNaif_nn( G, G->ir, G->jr, &k, &l );
-            PlusCourtChemin( S, G->ir, G->jr, k, l );
-            changement_case(G, k, l);            
-            
-            swap_case(G);
-            Ajout_action( S, 'S' );
-        }
-        
-        //le robot a une piece et va la poser sur la case correspondante
-        RechercherCaseNaif_c( G, getCouleurPieceRobot(G), G->ir, G->jr, &k, &l );
-        PlusCourtChemin( S, G->ir, G->jr, k, l);
-        changement_case(G, k, l);
-        
-        swap_case(G);
-        Ajout_action( S, 'S');
+		if( !robotPortePiece(G) ){       
+		    RechercherCaseNaif_nn( G, G->ir, G->jr, &k, &l );
+		}else{
+			RechercherCaseNaif_c( G, getCouleurPieceRobot(G), G->ir, G->jr, &k, &l );
+		}
+	
+		PlusCourtChemin( S, G->ir, G->jr, k, l);
+		changement_case(G, k, l);
+		swap_case(G);
+		Ajout_action( S, 'S');
     }
 }
 

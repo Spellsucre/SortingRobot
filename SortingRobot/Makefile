@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: Game_SortingRobot Checker_SortingRobot main_exo1 main_naif clean
+all: Game_SortingRobot Checker_SortingRobot main_exo1 main_naif clean2
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -45,7 +45,7 @@ main_naif: main_naif.o exo1.o Solution.o Grille.o entree_sortie.o
 	
 	
 
-clean:
+clean2:
 	rm *.o 
 	
 	
