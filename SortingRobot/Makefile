@@ -30,12 +30,6 @@ Checker_SortingRobot: Checker_SortingRobot.o  API_AffGrille.o Grille.o Solution.
 
 exo1.o: exo1.c exo1.h
 	gcc $(CFLAGS) -c exo1.c
-
-main_exo1.o: main_exo1.c
-	gcc $(CFLAGS) -c main_exo1.c
-	
-main_exo1: main_exo1.o exo1.o Solution.o entree_sortie.o
-	gcc $(CFLAGS) -o main_exo1 main_exo1.o exo1.o Solution.o Grille.o entree_sortie.o -lm
 	
 main_naif.o: main_naif.c
 	gcc $(CFLAGS) -c main_naif.c
