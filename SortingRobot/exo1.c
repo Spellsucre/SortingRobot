@@ -28,7 +28,7 @@ void PlusCourtChemin(Solution *S, int i, int j, int k, int l){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // retourne 1 si la case (i,j) est noire, 0 sinon
 int caseNoire(Grille *G, int i, int j){
-    printf("Case Noire?");
+	//printf("dbg caseNoire (%d,%d)\n", i ,j);
 	return G->T[i][j].fond == G->T[i][j].piece ;
 }
 
@@ -36,6 +36,7 @@ int caseNoire(Grille *G, int i, int j){
 // retourne 1 si la pièce en (i,j) est noire, 0 sinon
 int pieceNoire(Grille *G, int i, int j){
 	//pas de pièce => absence de couleur => noir
+	//printf("dbg pieceNoire (%d,%d)\n", i ,j);
 	return G->T[i][j].piece == -1 ;
 }
 
@@ -54,145 +55,74 @@ int getCouleurPieceRobot(Grille *G){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // reourne la couleur de la case (i,j)
 int getCouleurCase(Grille *G, int i, int j){
+	//printf("dbg getCouleurCase : %d\n", G->T[i][j].fond);
 	return G->T[i][j].fond;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // retourne 1 si (i,j) est contenu dans la grille
 int estDansGrille(Grille *G, int i, int j){
+	//printf("dbg estDansGrille (%d,%d)\n", i ,j);
 	if ( i<0 || j<0 || i>=G->m || j>=G->n ) return 0;
 	return 1;
+}
+
+int distance(int i, int j, int k, int l){
+	return abs(k-i) + abs(l-j) ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) la plus proche de la case
 // (i,j) et dont la couleur est c, (-1,-1) si elle n'existe pas
-void RechercherCaseNaif_c_(Grille *G, int c, int i, int j, int *k, int *l){
-	int m, n;
-	
-	//le point (k_,l_) d'origine sort de la grille
-	int k_= G->m * G->n, l_ = G->m * G->n;
-	
-	for (m=0; m<G->m; m++){
-		for (n=0; n<G->n; n++){	//parcours de la grille
-			
-			if ( !caseNoire(G,m,n) && G->T[m][n].fond == c ){	//si la case est de couleur c:
-				if ( abs(i-m)<=abs(k_-m) ){	//si la distance en lignes est inf.:
-					if ( abs(j-n)<abs(l_-n) ){	//et la dist. en col. aussi:
-						//printf("Couleur case: %d\nCouleur robot: %d\n", G->T[m][n].fond, c);
-						k_ = m;	//cette case est de la couleur demandée et est
-						l_ = n;	//plus proche au point (i,j) que la case (k_,l_)
-					}	
-				}
-			}
-			
-		}
-	}
-	
-	//si k_ ou l_ vallent m*n, cela signifie qu'il n'y a pas de case de couleur c
-	if ( (k_ == G->m * G->n) || (l_ == G->m * G->n) ){
-		*k = -1;
-		*l = -1;
-	}else{
-		*k = k_;
-		*l = l_;
-	}
-	
-}
-
 void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l){
-    printf("Pos = (%d,%d)\n",i ,j);
 	int m, n;
-	*k = G->m;
-	*l = G->n;
-	int dmin=abs(*k-i)+abs(*l-j);
+	
+	*k= G->m * G->n; *l = G->m * G->n;
+	int dMin = distance(i, j, *k, *l);
+	
 	for (m=0; m<G->m; m++){
 		for (n=0; n<G->n; n++){	//parcours de la grille
-			printf("dbg_2 : m = %d, n = %d\n\n", m, n);
-			printf("%d", &(G->T[m][n]));
-			if ( (G->T[m][n]).fond == c && !caseNoire(G,m,n) ){	//si la case est de couleur c:
-			    printf("dbg_3\n");
-				if (abs(m-i)+abs(n-j)<dmin){	//si la distance en lignes est inf.:
-				        printf("dbg_4\n");
-				    	//et la dist. en col. aussi:
-						//printf("Couleur case: %d\nCouleur robot: %d\n", G->T[m][n].fond, c);
-						*k = m;	//cette case est de la couleur demandée et est
-						*l = n;	//plus proche au point (i,j) que la case (k_,l_)
-						
-						printf("Cherche Case couleur %d : k = %d, l = %d\n", c, *k, *l);
-						dmin=abs(*l-j)+abs(*k-i);
+			
+			if ( !caseNoire(G,m,n) && G->T[m][n].fond == c ){
+				if ( distance(i,j, m,n) < dMin){
+					*k = m;
+					*l = n;
+					dMin = distance	(i, j, m, n);						
 				}
 			}
+			
 		}
 	}
-	printf("\n");
-	//si k_ ou l_ vallent m*n, cela signifie qu'il n'y a pas de case de couleur c
-
+	
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) non vide et possédant une
 // pièce la plus proche de la case (i,j), (-1,-1) si elle n'existe pas
-void RechercherCaseNaif_nn_(Grille *G, int i, int j, int *k, int *l){
+void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
 	int m, n;
 	
-	//le point (k_,l_) d'origine sort de la grille
-	int k_= G->m * G->n, l_ = G->m * G->n;
+	*k= G->m * G->n; *l = G->m * G->n;
+	int dMin = distance(i, j, *k, *l);
 	
 	for (m=0; m<G->m; m++){
 		for (n=0; n<G->n; n++){	//parcours de la grille
 			
 			if ( !caseNoire(G, m, n) &&
 				 !pieceNoire(G, m, n) ){	//si la case est nn et a une piece:
-				if ( abs(i-m)<=abs(k_-m) ){	//si la distance en lignes est inf.:
-					if ( abs(j-n)<abs(l_-n) ){	//et la dist. en col. aussi:
-						k_ = m;	//cette case est de la couleur demandée et est
-						l_ = n;	//plus proche au point (i,j) que la case (k_,l_)
-					}	
+				if ( distance(i,j, m,n) < dMin){
+					*k = m;
+					*l = n;
+					dMin = distance	(i, j, m, n);						
 				}
 			}
 			
 		}
 	}
 	
-	//si k_ ou l_ vallent m*n, cela signifie qu'il n'y a pas de case non vide
-	if ( (k_ == G->m * G->n) || (l_ == G->m * G->n) ){
-		*k = -1;
-		*l = -1;
-	}else{
-		*k = k_;
-		*l = l_;
-	}
 }
-
-void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
-	int m, n;
-	*k = G->n;
-	*l = G->m;
-	int dmin=abs(*l-j)+abs(*k-i);
-	for (m=0; m<G->m; m++){
-		for (n=0; n<G->n; n++){	//parcours de la grille
-			
-			if ( !caseNoire(G,m,n) &&
-				 !pieceNoire(G, m, n) ){	//si la case est de couleur c:
-				if (abs(m-i)+abs(n-j)<dmin){	//si la distance en lignes est inf.:
-				    	//et la dist. en col. aussi:
-						//printf("Couleur case: %d\nCouleur robot: %d\n", G->T[m][n].fond, c);
-						*k = m;	//cette case est de la couleur demandée et est
-						*l = n;	//plus proche au point (i,j) que la case (k_,l_)
-						printf("Cherche piece : k = %d, l = %d\n", *k, *l);
-						dmin = abs(*l-j)+abs(*k-i);
-				}
-			}
-			
-		}
-	}
 	
-	printf("\n");
-	//si k_ ou l_ vallent m*n, cela signifie qu'il n'y a pas de case de couleur c
 
-	
-}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) la plus proche de la case
 // (i,j) et dont la couleur est c, (-1,-1) si elle n'existe pas
@@ -372,6 +302,7 @@ void RechercherCaseCirculaire_nn(Grille *G, int i, int j, int *k, int *l){
 
 }
 
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void algorithme_naif(Grille *G, Solution *S){
     int k, l;
@@ -394,15 +325,24 @@ void algorithme_circulaire(Grille *G, Solution *S){
     int k, l;
     
     while (G->cptr_noire < G->m * G->n){
-		if( !robotPortePiece(G) ){  
+		if( !robotPortePiece(G) ){
+			//printf("dbg_nn\n");
 		    RechercherCaseCirculaire_nn( G, G->ir, G->jr, &k, &l );
+		    //printf("res_nn = (%d,%d)\n", k, l);
 		}else{
+			//printf("dbg_c\n");
 			RechercherCaseCirculaire_c( G, getCouleurPieceRobot(G), G->ir, G->jr, &k, &l );
+			//printf("res_c = (%d,%d)\n", k, l);
 		}
+		//printf("dbg_1\n");
 		PlusCourtChemin( S, G->ir, G->jr, k, l);
+		//printf("dbg_2\n");
 		changement_case(G, k, l);
+		//printf("dbg_3\n");
 		swap_case(G);
+		//printf("dbg_4\n");
 		Ajout_action( S, 'S');
+		//printf("dbg_5\n\n");
     }
 }
 
