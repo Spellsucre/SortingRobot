@@ -19,6 +19,10 @@ int getCouleurCase(Grille *G, int i, int j);
 
 int estDansGrille(Grille *G, int i, int j);
 
+int distance(int i, int j, int k, int l);
+
+int grilleTerminee(Grille *G);
+
 
 void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l);
 

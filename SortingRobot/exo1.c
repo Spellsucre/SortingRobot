@@ -71,9 +71,13 @@ int distance(int i, int j, int k, int l){
 	return abs(k-i) + abs(l-j) ;
 }
 
+int grilleTerminee(Grille *G){
+	return G->cptr_noire == G->m * G->n ;
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) la plus proche de la case
-// (i,j) et dont la couleur est c, (-1,-1) si elle n'existe pas
+// (i,j) et dont la couleur est c
 void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l){
 	int m, n;
 	
@@ -83,7 +87,7 @@ void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l){
 	for (m=0; m<G->m; m++){
 		for (n=0; n<G->n; n++){	//parcours de la grille
 			
-			if ( !caseNoire(G,m,n) && G->T[m][n].fond == c ){
+			if ( !caseNoire(G,m,n) && getCouleurCase(G,m,n)==c ){
 				if ( distance(i,j, m,n) < dMin){
 					*k = m;
 					*l = n;
@@ -98,7 +102,7 @@ void RechercherCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l){
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) non vide et possédant une
-// pièce la plus proche de la case (i,j), (-1,-1) si elle n'existe pas
+// pièce la plus proche de la case (i,j)
 void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
 	int m, n;
 	
@@ -108,8 +112,7 @@ void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
 	for (m=0; m<G->m; m++){
 		for (n=0; n<G->n; n++){	//parcours de la grille
 			
-			if ( !caseNoire(G, m, n) &&
-				 !pieceNoire(G, m, n) ){	//si la case est nn et a une piece:
+			if ( !caseNoire(G, m, n) && !pieceNoire(G, m, n) ){
 				if ( distance(i,j, m,n) < dMin){
 					*k = m;
 					*l = n;
@@ -119,21 +122,16 @@ void RechercherCaseNaif_nn(Grille *G, int i, int j, int *k, int *l){
 			
 		}
 	}
-	
 }
 	
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) la plus proche de la case
-// (i,j) et dont la couleur est c, (-1,-1) si elle n'existe pas
+// (i,j) et dont la couleur est c
 void RechercherCaseCirculaire_c(Grille *G, int c, int i, int j, int *k, int *l){
-	int h, d, x, y;// d_max;
+	int h, d, x, y;
 	
-	//d_max est la longeur de la diagonale de la grille
-	//d_max = (int) sqrt( pow(G->m,2) + pow(G->n,2) ); 
-
-	
-	for (d=0; d<G->m*G->n; d++){
+	for (d=1; d<G->m*G->n; d++){
 		//case du haut
 		h=0;
 		x = j;
@@ -144,7 +142,7 @@ void RechercherCaseCirculaire_c(Grille *G, int c, int i, int j, int *k, int *l){
 			return;
 		}
 		
-		if (d==0) continue;
+		//if (d==0) continue;
 		
 		h++;
 	
@@ -202,7 +200,7 @@ void RechercherCaseCirculaire_c(Grille *G, int c, int i, int j, int *k, int *l){
 	
 		//case du bas
 		x = j;
-		y = d;
+		y = i+d;
 		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
 				&& getCouleurCase(G,y,x)==c ){
 			*k=y; *l=x;
@@ -214,15 +212,18 @@ void RechercherCaseCirculaire_c(Grille *G, int c, int i, int j, int *k, int *l){
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // met dans k et l les coordonnées de la case (k,l) non vide et possédant une
-// pièce la plus proche de la case (i,j), (-1,-1) si elle n'existe pas
+// pièce la plus proche de la case (i,j)
 void RechercherCaseCirculaire_nn(Grille *G, int i, int j, int *k, int *l){
-	int h, d, x, y;// d_max;
+	int h, d, x, y;
+
+	// d=0
+	if ( estDansGrille(G,i,j) && !caseNoire(G,i,j)
+			&& !pieceNoire(G,i,j) ){
+		*k=i; *l=j;
+		return;
+	}
 	
-	//d_max est la longeur de la diagonale de la grille
-	//d_max = (int) sqrt( pow(G->m,2) + pow(G->n,2) ); 
-	
-	
-	for (d=0; d<G->m*G->n; d++){
+	for (d=1; d<G->m*G->n; d++){
 		//case du haut
 		h=0;
 		x = j;
@@ -233,7 +234,7 @@ void RechercherCaseCirculaire_nn(Grille *G, int i, int j, int *k, int *l){
 			return;
 		}
 		
-		if (d==0) continue;
+		//if (d==0) continue;
 		
 		h++;
 	
@@ -291,7 +292,7 @@ void RechercherCaseCirculaire_nn(Grille *G, int i, int j, int *k, int *l){
 	
 		//case du bas
 		x = j;
-		y = d;
+		y = i+d;
 		if ( estDansGrille(G,y,x) && !caseNoire(G,y,x)
 				&& !pieceNoire(G,y,x) ){
 			*k=y; *l=x;
@@ -302,12 +303,11 @@ void RechercherCaseCirculaire_nn(Grille *G, int i, int j, int *k, int *l){
 
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void algorithme_naif(Grille *G, Solution *S){
     int k, l;
     
-    while (G->cptr_noire < G->m * G->n){
+    while ( !grilleTerminee(G) ){
 		if( !robotPortePiece(G) ){  
 		    RechercherCaseNaif_nn( G, G->ir, G->jr, &k, &l );
 		}else{
@@ -324,25 +324,16 @@ void algorithme_naif(Grille *G, Solution *S){
 void algorithme_circulaire(Grille *G, Solution *S){
     int k, l;
     
-    while (G->cptr_noire < G->m * G->n){
+    while ( !grilleTerminee(G) ){
 		if( !robotPortePiece(G) ){
-			//printf("dbg_nn\n");
 		    RechercherCaseCirculaire_nn( G, G->ir, G->jr, &k, &l );
-		    //printf("res_nn = (%d,%d)\n", k, l);
 		}else{
-			//printf("dbg_c\n");
 			RechercherCaseCirculaire_c( G, getCouleurPieceRobot(G), G->ir, G->jr, &k, &l );
-			//printf("res_c = (%d,%d)\n", k, l);
 		}
-		//printf("dbg_1\n");
 		PlusCourtChemin( S, G->ir, G->jr, k, l);
-		//printf("dbg_2\n");
 		changement_case(G, k, l);
-		//printf("dbg_3\n");
 		swap_case(G);
-		//printf("dbg_4\n");
 		Ajout_action( S, 'S');
-		//printf("dbg_5\n\n");
     }
 }
 
