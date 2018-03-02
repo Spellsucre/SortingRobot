@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: Game_SortingRobot Checker_SortingRobot main_naif clean2
+all: main_test gnuplot clean2 #Game_SortingRobot Checker_SortingRobot
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -28,14 +28,27 @@ Checker_SortingRobot: Checker_SortingRobot.o  API_AffGrille.o Grille.o Solution.
 
 
 
-exo1.o: exo1.c exo1.h
-	gcc $(CFLAGS) -c exo1.c
+fonctions_base.o: fonctions_base.c fonctions_base.h
+	gcc $(CFLAGS) -c fonctions_base.c
 	
-main_naif.o: main_naif.c
-	gcc $(CFLAGS) -c main_naif.c
+methode_naive.o: methode_naive.c methode_naive.h
+	gcc $(CFLAGS) -c methode_naive.c
 	
-main_naif: main_naif.o exo1.o Solution.o Grille.o entree_sortie.o
-	gcc $(CFLAGS) -o main_naif main_naif.o exo1.o Solution.o Grille.o entree_sortie.o -lm
+methode_circulaire.o: methode_circulaire.c methode_circulaire.h
+	gcc $(CFLAGS) -c methode_circulaire.c
+	
+main_test.o: main_test.c
+	gcc $(CFLAGS) -c main_test.c
+	
+main_test: main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o
+	gcc $(CFLAGS) -o main_test main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o -lm
+
+
+gnuplot.o: gnuplot.c
+	gcc $(CFLAGS) -c gnuplot.c
+
+gnuplot: gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o
+	gcc $(CFLAGS) -o gnuplot gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o
 	
 	
 
