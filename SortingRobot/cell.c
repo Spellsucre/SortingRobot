@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "cell.h"
 
@@ -8,13 +9,13 @@
 CelluleLDC* creerCellule(int i, int j){
     CelluleLDC *cel = malloc(sizeof(CelluleLDC));
     if (cel == NULL){
-        printf("Erreur lors de l'allocation)
+        printf("Erreur lors de l'allocation");
         return NULL;
     }
     cel->i=i;
     cel->j=j;
     cel->prec=NULL;
-    cel->suive=NULL;
+    cel->suiv=NULL;
     return cel;
 }
 
@@ -41,7 +42,7 @@ void LDCInsererEnFin(LDC *ldc, int i, int j){
         return;
     }
     CelluleLDC *cel = creerCellule( i , j );
-    if LDCvide(ldc){ 
+    if ( LDCvide(ldc) ){ 
         ldc->premier=cel;
         ldc->dernier=cel;
         return;

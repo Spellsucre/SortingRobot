@@ -16,7 +16,7 @@ CelluleLDC* creerCellule(int i, int j);
 
 void LDCInitialise(LDC *ldc);
 
-int LDCVide(LDC *ldc);
+int LDCvide(LDC *ldc);
 
 void LDCInsererEnFin(LDC *ldc, int i, int j);
 
