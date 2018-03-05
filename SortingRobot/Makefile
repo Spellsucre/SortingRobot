@@ -36,12 +36,15 @@ methode_naive.o: methode_naive.c methode_naive.h
 	
 methode_circulaire.o: methode_circulaire.c methode_circulaire.h
 	gcc $(CFLAGS) -c methode_circulaire.c
-	
+
+methode_LDC.o: methode_LDC.c methode_LDC.h
+	gcc $(CFLAGS) -c methode_LDC.c
+
 main_test.o: main_test.c
 	gcc $(CFLAGS) -c main_test.c
 	
-main_test: main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o
-	gcc $(CFLAGS) -o main_test main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o -lm
+main_test: main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o
+	gcc $(CFLAGS) -o main_test main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o -lm
 
 
 gnuplot.o: gnuplot.c
