@@ -1,0 +1,23 @@
+plot "temps_LDC.dat" using 1:2 with line title "recherche LDC" lt rgb "blue"
+
+
+
+
+replot 30 with line linetype 0 title ""
+replot "guid.dat" using 1:2 with line linetype 0 title ""
+
+set title "Temps de calcul en fonction de la\nméthode de recherche utilisée"
+set autoscale
+#set xrange [0 : 50000]
+set xlabel "Nombre de cases dans la grille"
+set ylabel "Temps (s)"
+
+replot
+
+#saving to .png
+set term png
+set output "graph.png"
+replot
+
+
+# gnuplot > load 'monFichier'

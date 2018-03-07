@@ -1,1 +1,1 @@
-rm -i Robot_*
+rm *.sol

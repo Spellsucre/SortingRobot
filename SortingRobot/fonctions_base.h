@@ -23,6 +23,4 @@ int distance(int i, int j, int k, int l);
 
 int grilleTerminee(Grille *G);
 
-void liberer(Grille *G);
-
 #endif

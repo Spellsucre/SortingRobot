@@ -50,8 +50,8 @@ main_test: main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Sol
 gnuplot.o: gnuplot.c
 	gcc $(CFLAGS) -c gnuplot.c
 
-gnuplot: gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o
-	gcc $(CFLAGS) -o gnuplot gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o
+gnuplot: gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o
+	gcc $(CFLAGS) -o gnuplot gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o
 	
 	
 

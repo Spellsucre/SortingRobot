@@ -79,11 +79,4 @@ int grilleTerminee(Grille *G){
 	return G->cptr_noire == G->m * G->n ;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void liberer(Grille *G){
-	int i;
-	for (i=0;i<G->m;i++) free(G->T[i]);
-	free(G->T);
-}
-
 

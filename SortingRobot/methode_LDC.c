@@ -101,10 +101,7 @@ void LDCafficher(LDC *ldc){
     }
     CelluleLDC *cour=ldc->premier;
     while(cour){
-    	printf("Cell : Prec : %d\t ", cour->prec!=NULL);
-        printf("Pos ( %d , %d )\t",cour->i,cour->j);
-        printf("Pointer : %d \t",cour!=NULL);
-        printf("Suiv : %d \n\n", cour->suiv!=NULL);
+        printf("Cell ( %d , %d )\t",cour->i,cour->j);
         cour=cour->suiv;
     }
 }
@@ -162,27 +159,21 @@ CelluleLDC* LDCrechercherPlusProcheCase(LDC* ldc, int i, int j){
 void algorithme_parcouleur(Grille *G, Solution *S){
     //Initialisation de TC le tableau de LDC de taille nbcoul (une case par couleur)
     LDC **TC = malloc(G->nbcoul*sizeof(LDC*));
-    int q, m, n, k, l, i;
+    int q, m, n, k, l;
     for (q=0; q<G->nbcoul; q++){
-        TC[q]=malloc(sizeof(LDC*));
+        TC[q]=malloc(sizeof(LDC));
         LDCInitialise(TC[q]);
     }
     int indice;
     
     for (m=0; m<G->m; m++){
 		for (n=0; n<G->n; n++){
+			if( caseNoire(G, m, n) ) continue;
 		    indice=G->T[m][n].fond;
 		    LDCInsererEnFin(TC[indice], m, n); 
         }
     }
-    
-    printf("Tab init :\n");
-    for(i=0;i<G->nbcoul;i++){
-    	printf("\nCouleur = %d\n", i); 
-    	LDCafficher(TC[i]);
-    }
-    printf("\n");
-    
+
     CelluleLDC *target= malloc(sizeof(CelluleLDC));
     while ( !grilleTerminee(G)){
 		if( !robotPortePiece(G) ){  
@@ -191,7 +182,6 @@ void algorithme_parcouleur(Grille *G, Solution *S){
 		    changement_case(G, k, l);
 		}else{
 			target = LDCrechercherPlusProcheCase(TC[getCouleurPieceRobot(G)], G->ir, G->jr);
-			//printf("Target = ( %d , %d )\n de couleur %d\n",target->i, target->j, getCouleurPieceRobot(G));
 			PlusCourtChemin( S, G->ir, G->jr, target->i, target->j);
 			changement_case(G, target->i, target->j);
 			indice=getCouleurPieceRobot(G);
@@ -199,18 +189,7 @@ void algorithme_parcouleur(Grille *G, Solution *S){
 		}
 		swap_case(G);
 		Ajout_action( S, 'S');
-		Affiche(S);
-		printf("\n");
     }
-    
-	printf("Tab fin :\n");
-    for(i=0;i<G->nbcoul;i++){
-    	printf("\nCouleur = %d\n", i); 
-    	LDCafficher(TC[i]);
-    }
-    printf("\n");
-    
-    free(target);
     
     for (k=0; k<G->nbcoul; k++){
         LDCdesalloue(TC[k]);

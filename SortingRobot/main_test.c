@@ -83,8 +83,8 @@ int main(int argc, char** argv){
 		printf("\nAlgo version %d NOK\n\n", version);
 	}
 	//Affiche(&S);
-
-	liberer(&G);
+	freeGrille(&G);
+	freeSol(&S);
 
 	return 0;
 }

@@ -5,7 +5,7 @@
 #include "fonctions_base.h"
 #include "methode_naive.h"
 #include "methode_circulaire.h"
-
+#include "methode_LDC.h"
 
 FILE *f;
 clock_t t0, t1;
@@ -34,7 +34,8 @@ void methode_naive(){
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
 		printf("n | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
-		liberer(&G);
+		freeGrille(&G);
+		//freeSol(&S);
 	}
 	
 	fclose(f);	
@@ -60,7 +61,8 @@ void methode_circulaire(){
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
 		printf("c | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
-		liberer(&G);
+		freeGrille(&G);
+		//freeSol(&S);
 	}
 	
 	fclose(f);
@@ -86,7 +88,8 @@ void methode_circulaire_2(){
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
 		printf("c | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
-		liberer(&G);
+		freeGrille(&G);
+		//freeSol(&S);
 	}
 	
 	fclose(f);
@@ -112,7 +115,8 @@ void methode_circulaire_3(){
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
 		printf("c | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
-		liberer(&G);
+		freeGrille(&G);
+		//freeSol(&S);
 	}
 	
 	fclose(f);
@@ -138,7 +142,37 @@ void methode_circulaire_4(){
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
 		printf("c | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
-		liberer(&G);
+		freeGrille(&G);
+		//freeSol(&S);
+	}
+	
+	fclose(f);
+}
+
+void methode_LDC(){
+	d=0.0;
+	f = fopen("courbes/temps_LDC.dat", "w");
+	fprintf(f, "#nbCoul=N=M\n#nbCases, d (LDC)\n");
+	
+	for (tailleGrille=4; (int)d < 2; tailleGrille+=30){
+		Solution_init(&S);
+		G.m=tailleGrille; G.n=tailleGrille;
+		G.nbcoul= tailleGrille;
+		Grille_allocation(&G);
+		Gene_Grille(&G, 1);
+	
+		t0 = clock();
+		algorithme_parcouleur(&G, &S);
+		t1 = clock();
+		d = ((double)(t1-t0))/CLOCKS_PER_SEC;
+		
+		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
+		printf("c | tailleGrille = %d, d = %f\n", tailleGrille, d);
+		
+		freeGrille(&G);
+		
+		
+		//sfreeSol(&S);
 	}
 	
 	fclose(f);
@@ -146,11 +180,11 @@ void methode_circulaire_4(){
 
 
 int main(){
-	methode_naive();
-	methode_circulaire();
-	methode_circulaire_2();
-	methode_circulaire_3();
-	methode_circulaire_4();
-	
+	//methode_naive();
+	//methode_circulaire();
+	//methode_circulaire_2();
+	//methode_circulaire_3();
+	//methode_circulaire_4();
+	methode_LDC();
 	return 0;
 }
