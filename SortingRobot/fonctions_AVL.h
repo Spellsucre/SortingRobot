@@ -27,4 +27,13 @@ AVL *rechercheAVL(AVL *b, int val);
 AVL *supprimeMaxAVL(AVL *b, int *pMax);
 AVL *supprimeAVL(AVL *b, int val);
 
+void afficherAVL(AVL *b);
+
+void libererAVL(AVL *b);
+
+void 
+nodeToDot(AVL *b, FILE *f);
+void AVLtoDot(AVL *b, int i);
+
+
 #endif

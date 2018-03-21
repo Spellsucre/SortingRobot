@@ -1,0 +1,6 @@
+graph G {
+	node [shape=circle];
+	150--206;
+	150 [label="150\nh=1"];
+	206 [label="206\nh=0", color=blue];
+}
