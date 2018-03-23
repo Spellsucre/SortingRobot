@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "methode_AVL.h"
+#include "fonctions_AVL.h"
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int max(int a, int b){
@@ -54,6 +55,8 @@ AVL *rotD(AVL *b){
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AVL *equilibreAVL(AVL *b){
+	if (!b) return NULL;
+	
     if ( b->fg && b->fd &&
     	(b->fg->hauteur - b->fd->hauteur) == 2 ){
         if ( b->fg->fg && b->fg->fd &&
@@ -67,7 +70,8 @@ AVL *equilibreAVL(AVL *b){
         	(b->fd->fg->hauteur) > (b->fd->fd->hauteur) ) b=rotD(b->fd);
         b=rotG(b);
     }
-
+	
+	maj_hauteur(b);
     return b;
 }
 
@@ -126,6 +130,8 @@ AVL *rechercheAVL(AVL *b, int val){
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AVL *supprimeMaxAVL(AVL *b, int *pMax){
+	if (!b) return NULL;
+	
     if (!b->fd){
         *pMax = b->j;
         AVL *res = b->fg;
@@ -139,11 +145,12 @@ AVL *supprimeMaxAVL(AVL *b, int *pMax){
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AVL *supprimeAVL(AVL *b, int val){
+	if (!b) return NULL;
     AVL *res = b;
     
-    if (b->j < val){
+    if (b->j > val){
         b->fg = supprimeAVL(b->fg, val);
-    } else if (b->j > val){
+    } else if (b->j < val){
         b->fd = supprimeAVL(b->fd, val);
     } else {
         if (!b->fg){
@@ -155,6 +162,8 @@ AVL *supprimeAVL(AVL *b, int val){
             b->j = max;
         }
     }
+    
+    res = equilibreAVL(res);
     
     return res;
 }

@@ -12,11 +12,11 @@ int main(){
 
     AVL *b = NULL;
     
-    //int tab[] = {7,6,9,2,3,4,5,8,10,1};
+    int tab[] = {7,6,9,2,3,4,5,8,10,1};
 	
 	for (i=0; i<10; i++){
-		val = rand()%300;
-		//val = tab[i];
+		//val = rand()%300;
+		val = tab[i];
 		b = insererAVL(b, val);
 		
 		printf("nb_val = %d\n", i+1);
@@ -27,7 +27,21 @@ int main(){
 		
 		AVLtoDot(b, i+1);
 	}
-
+	/*
+	AVLtoDot(b, 1);
+	
+	int v = 6;
+	AVL *res = rechercheAVL(b, v);
+	
+	
+	printf("res = %d\n", res!=NULL?(res->j):-1 );
+	
+	b = supprimeAVL(b, v);
+	b = insererAVL(b, v);
+	AVLtoDot(b, 2);
+	*/
+	
+	
 	libererAVL(b);
 	
     return 0;

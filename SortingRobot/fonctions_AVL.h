@@ -1,5 +1,5 @@
-#ifndef AVL_H
-#define AVL_H
+#ifndef FONCTIONS_AVL_H
+#define FONCTIONS_AVL_H
 
 typedef struct _AVL{
     int j;
@@ -31,8 +31,7 @@ void afficherAVL(AVL *b);
 
 void libererAVL(AVL *b);
 
-void 
-nodeToDot(AVL *b, FILE *f);
+void nodeToDot(AVL *b, FILE *f);
 void AVLtoDot(AVL *b, int i);
 
 

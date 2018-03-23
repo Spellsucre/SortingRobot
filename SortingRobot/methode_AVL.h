@@ -1,30 +1,25 @@
-#ifndef AVL_H
-#define AVL_H
+#ifndef METHODE_AVL_H
+#define METHODE_AVL_H
 
-typedef struct _AVL{
-    int j;
-    int hauteur;
-    
-    struct _AVL *fd;
-    struct _AVL *fg;
-} AVL;
+#include "fonctions_AVL.h"
+#include "Grille.h"
+#include "Solution.h"
 
-AVL* creeAVL(int val, AVL *fg, AVL *fd);
+typedef struct {
+	int nbcoul;
+	int nblig;
+	int cptr_noire;	//nombre de cases noires
+	AVL ***M;
+} t_AVL;
 
-int max(int a, int b);
+t_AVL *creer_t_AVL(int nbcoul, int nblig);
 
-AVL* insererAVL(AVL *b, int val);
+t_AVL *initialiser_t_AVL(Grille *G);
 
-void maj_hauteur(AVL *b);
+void liberer_t_AVL(t_AVL *tavl);
 
-AVL* equilibreAVL(AVL *b);
+void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *v);
 
-AVL* rotG(AVL *b);
-AVL* rotD(AVL *b);
-
-AVL *rechercheAVL(AVL *b, int val);
-
-AVL *supprimeMaxAVL(AVL *b, int *pMax);
-AVL *supprimeAVL(AVL *b, int val);
+void algorithme_AVL(Grille *G, Solution *S);
 
 #endif
