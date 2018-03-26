@@ -71,15 +71,39 @@ void liberer_t_AVL(t_AVL *tavl){
 void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *v){
 	if (!tavl){ printf("tavl non existant"); return; }
 	
-	int i, dMin;
-	AVL *b;
+	int i, dCour, dMin;
+	AVL *b, *cour;
 	
 	*u= tavl->nblig * tavl->nblig; *v = tavl->nblig * tavl->nblig;
-	dMin = distance(k, l, *u, *v);
-	
+    dMin=distance(k,l,*u,*v);
 	for (i=0; i < tavl->nblig; i++){
 		b = tavl->M[c][i];
-		//TODO
+		cour=b;
+		while(cour){
+		    dCour=distJ(cour->j,l);
+		    if(cour->fg && cour->fd ){
+		        if (dCour > distJ(cour->fg->j,l)){
+		            cour=cour->fg;
+		            continue;
+		        }
+		        else if (dCour > distJ(cour->fd->j,l)){
+		            cour=cour->fd;
+		            continue;
+		        }
+		        else
+		            break;
+		    }
+		    else if (cour->fg && dCour > distJ(cour->fg->j,l)){
+		        cour=cour->fg;
+		        continue;
+		    }
+		    else if (cour->fd && dCour > distJ(cour->fd->j,l)){
+		        cour=cour->fd;
+		        continue;
+		    }
+		    else
+		        break;
+		}
 	}
 	
 	

@@ -10,6 +10,14 @@ int max(int a, int b){
     return (b>a?b:a);
 }
 
+int min(int a, int b){
+    return (a>b?b:a);
+}
+
+int distJ(int a, int b){
+    int d=a-b;
+    return (d<0?-d:d);
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void maj_hauteur(AVL *b){
     if (!b) return;

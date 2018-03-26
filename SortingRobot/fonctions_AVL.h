@@ -12,6 +12,8 @@ typedef struct _AVL{
 AVL* creeAVL(int val, AVL *fg, AVL *fd);
 
 int max(int a, int b);
+int min(int a, int b);
+int distJ(int a, int b);
 
 AVL* insererAVL(AVL *b, int val);
 
