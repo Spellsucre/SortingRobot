@@ -1,5 +1,5 @@
-#ifndef AVL_H
-#define AVL_H
+#ifndef FONCTIONS_AVL_H
+#define FONCTIONS_AVL_H
 
 typedef struct _AVL{
     int j;
@@ -12,6 +12,8 @@ typedef struct _AVL{
 AVL* creeAVL(int val, AVL *fg, AVL *fd);
 
 int max(int a, int b);
+int min(int a, int b);
+int distJ(int a, int b);
 
 AVL* insererAVL(AVL *b, int val);
 
@@ -26,5 +28,13 @@ AVL *rechercheAVL(AVL *b, int val);
 
 AVL *supprimeMaxAVL(AVL *b, int *pMax);
 AVL *supprimeAVL(AVL *b, int val);
+
+void afficherAVL(AVL *b);
+
+void libererAVL(AVL *b);
+
+void nodeToDot(AVL *b, FILE *f);
+void AVLtoDot(AVL *b, int i);
+
 
 #endif

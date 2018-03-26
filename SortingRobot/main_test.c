@@ -6,6 +6,7 @@
 #include "methode_naive.h"
 #include "methode_circulaire.h"
 #include "methode_LDC.h"
+#include "methode_AVL.h"
 
 int main(int argc, char** argv){
     
@@ -15,7 +16,11 @@ int main(int argc, char** argv){
 	clock_t t0, t1;
 	double d1;
 	
-	char *modeRecherche[] = { "tampon", "recherche_naive", "recherche_circulaire", "recherche_ldc"};
+	char *modeRecherche[] = { "tampon",
+							"recherche_naive",
+							"recherche_circulaire",
+							"recherche_LDC",
+							"recherche_AVL"};
 
 	
 	Solution_init(&S);
@@ -66,10 +71,17 @@ int main(int argc, char** argv){
 			algorithme_parcouleur(&G, &S);
 			t1 = clock();
 			d1 = ((double)(t1-t0))/CLOCKS_PER_SEC;
+			break;
+		
+		case 4:
+			t0 = clock();
+			algorithme_AVL(&G, &S);
+			t1 = clock();
+			d1 = ((double)(t1-t0))/CLOCKS_PER_SEC;
 			break;	
 			
 		default:
-			printf("Versions de fonction de recherche de case lpp possibles: [1, 2, 3]\n");
+			printf("Versions de fonction de recherche de case lpp possibles: [1, 2, 3, 4]\n");
 			return 1;
 	}
 	

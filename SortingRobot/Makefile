@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: main_test gnuplot clean2 #Game_SortingRobot Checker_SortingRobot
+all: test_AVL clean2 #Game_SortingRobot Checker_SortingRobot main_test gnuplot
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -42,6 +42,9 @@ methode_LDC.o: methode_LDC.c methode_LDC.h
 	
 fonctions_AVL.o: fonctions_AVL.c fonctions_AVL.h
 	gcc $(CFLAGS) -c fonctions_AVL.c
+	
+methode_AVL.o: methode_AVL.c methode_AVL.h
+	gcc $(CFLAGS) -c methode_AVL.c
 
 main_test.o: main_test.c
 	gcc $(CFLAGS) -c main_test.c
