@@ -66,46 +66,96 @@ void liberer_t_AVL(t_AVL *tavl){
 	}
 	free(tavl);
 }
+/*
+    if(!b){
+        return -1;
+    }
+    if(b->fg && b->fd ){
+        if (dMin > distJ(b->fg->j,l)){
+            return AVLrecherche;
+        }
+        else if (dCour > distJ(b->fd->j,l)){
+            continue;
+        }
+        else
+            break;
+    }
+    else if (b->fg && dCour > distJ(b->fg->j,l)){
+        continue;
+    }
+    else if (b->fd && dCour > distJ(b->fd->j,l)){
+        cour=b->fd;
+        continue;
+    }
+    else
+        break;
+*/
 
+int AVLrechercheJ(AVL *b, int l, int dMin){
+    if(!b) return -1;
+    if(b->fg && b->fd){
+        if(distJ(b->fg->j,l) > distJ(b->fd->j,l)){
+            if(dMin > distJ(b->fd->j,l)){
+                dMin=distJ(b->fd->j,l);
+                return AVLrechercheJ(b->fd, l, dMin);
+            }
+        }
+        else{
+            if(dMin > distJ(b->fg->j,l)){
+                dMin=distJ(b->fg->j,l);
+                return AVLrechercheJ(b->fg, l, dMin);
+            } 
+        }           
+    }else if (b->fg && dMin > distJ(b->fg->j,l)){
+        dMin=distJ(b->fg->j,l);
+        return AVLrechercheJ(b->fg, l, dMin);
+    }
+    else if (b->fd && dMin > distJ(b->fd->j,l)){
+        dMin=distJ(b->fd->j,l);
+        return AVLrechercheJ(b->fd, l, dMin);
+    }
+    return b->j;
+}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *v){
 	if (!tavl){ printf("tavl non existant"); return; }
 	
-	int i, dCour, dMin;
-	AVL *b, *cour;
+	int jtmp, dMin, dCour, cpt=0;
+	AVL *cour;
 	
 	*u= tavl->nblig * tavl->nblig; *v = tavl->nblig * tavl->nblig;
-    dMin=distance(k,l,*u,*v);
-	for (i=0; i < tavl->nblig; i++){
-		b = tavl->M[c][i];
-		cour=b;
-		while(cour){
-		    dCour=distJ(cour->j,l);
-		    if(cour->fg && cour->fd ){
-		        if (dCour > distJ(cour->fg->j,l)){
-		            cour=cour->fg;
-		            continue;
-		        }
-		        else if (dCour > distJ(cour->fd->j,l)){
-		            cour=cour->fd;
-		            continue;
-		        }
-		        else
-		            break;
-		    }
-		    else if (cour->fg && dCour > distJ(cour->fg->j,l)){
-		        cour=cour->fg;
-		        continue;
-		    }
-		    else if (cour->fd && dCour > distJ(cour->fd->j,l)){
-		        cour=cour->fd;
-		        continue;
-		    }
-		    else
-		        break;
-		}
-	}
-	
+    dMin = distance(k,l,*u,*v);
+    
+    
+    while (k+cpt < tavl->nblig || k-cpt >= 0){
+        
+        if(k+cpt < tavl->nblig){
+            cour = tavl->M[c][k+cpt];
+            
+            jtmp = AVLrechercheJ(cour, l, dMin);
+            dCour = distance(k, l, k+cpt, jtmp);
+            if(dCour<dMin){
+                dMin=dCour;
+                *u=k+cpt;
+                *v=jtmp;
+            }
+        }
+        
+        if (k-cpt >= 0){
+            cour = tavl->M[c][k-cpt];
+            
+            jtmp = AVLrechercheJ(cour, l, dMin);
+            dCour = distance(k, l, k-cpt, jtmp);
+            if(dCour<dMin){
+                dMin=dCour;
+                *u=k-cpt;
+                *v=jtmp;
+            }
+        }
+        cpt++;
+
+        
+    }
 	
 }
 
