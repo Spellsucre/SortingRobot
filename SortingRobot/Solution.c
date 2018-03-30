@@ -85,3 +85,15 @@ void Lecture_Disque(char *filename, int *m, int *n, int *nbcoul, int *graine, So
   
   fclose(f);  
 }
+
+void freeListe(Cell_char *c){
+	if(c->suiv) freeListe(c->suiv);
+	free(c);
+}
+
+void freeSol(Solution *S){
+	if (S->prem) freeListe(S->prem);
+	//free(S);
+}
+
+

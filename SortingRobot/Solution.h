@@ -34,4 +34,8 @@ void Ecriture_Disque(int m, int n, int nbcoul, int graine, Solution *S);
 // La solution doit avoir ete initialisee auparavant
 void Lecture_Disque(char *filename, int *m, int *n, int *nbcoul, int *graine, Solution *S);
 
+void freeListe(Cell_char *c);
+
+void freeSol(Solution *S);
+
 #endif
