@@ -68,19 +68,21 @@ AVL *rotG(AVL *rac){
 AVL *equilibreAVL(AVL *b){
 	if (!b) return NULL;
 	
-    if ( (hauteur(b->fg) - hauteur(b->fd)) == 2 ){
-        if (b->fg &&
-        	hauteur(b->fg->fg) < hauteur(b->fg->fd) ) b=rotG(b->fg);
+	if( abs(hauteur(b->fg) - hauteur(b->fd)) < 2) return b;
+	
+	if ( (hauteur(b->fg) - hauteur(b->fd)) == 2 ){
+        if (b->fd &&
+        	hauteur(b->fg->fg) < hauteur(b->fg->fd) ) b->fg=rotG(b->fg);
         b=rotD(b);
     }
-    
-    if ( (hauteur(b->fg) - hauteur(b->fd)) == -2 ){
-        if (b->fd &&
-        	hauteur(b->fd->fg) > hauteur(b->fd->fd) ) b=rotD(b->fd);
+    else if ( (hauteur(b->fg) - hauteur(b->fd)) == -2 ){
+        if (b->fg &&
+        	hauteur(b->fd->fd) < hauteur(b->fd->fg) ) b->fd=rotD(b->fd);
         b=rotG(b);
     }
-	
+
 	maj_hauteur(b);
+	
     return b;
 }
 
@@ -162,9 +164,7 @@ AVL *supprimeAVL(AVL *b, int val){
         }
     }
     
-    //AVLtoDot(b, 100, val);
     res = equilibreAVL(res);
-    //AVLtoDot(b, 101, val);
     
     return res;
 }
