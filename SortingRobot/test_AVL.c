@@ -12,9 +12,9 @@ int main(){
 
     AVL *b = NULL;
     
-    int tab[] = {7,6,9,2,3,4,5,8,10,1};
+    int tab[] = {1,0,3,2,4};
 	
-	for (i=0; i<10; i++){
+	for (i=0; i<5; i++){
 		//val = rand()%300;
 		val = tab[i];
 		b = insererAVL(b, val);
@@ -25,21 +25,16 @@ int main(){
 		printf("\nhauteur = %d\n", b->hauteur);
 		printf("\n\n");
 		
-		AVLtoDot(b, i+1);
+		//AVLtoDot(b, i+1, 0);
 	}
-	/*
-	AVLtoDot(b, 1);
 	
-	int v = 6;
-	AVL *res = rechercheAVL(b, v);
+	AVLtoDot(b, 0, 0);
 	
+	b = supprimeAVL(b, 1);
+	AVLtoDot(b, 10, 1);
 	
-	printf("res = %d\n", res!=NULL?(res->j):-1 );
-	
-	b = supprimeAVL(b, v);
-	b = insererAVL(b, v);
-	AVLtoDot(b, 2);
-	*/
+	b = supprimeAVL(b, 4);
+	AVLtoDot(b, 11, 4);
 	
 	
 	libererAVL(b);

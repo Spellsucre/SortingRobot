@@ -8,9 +8,9 @@
 typedef struct {
 	int nbcoul;
 	int nblig;
-	int cptr_noire;	//nombre de cases noires
 	AVL ***M;
 } t_AVL;
+
 
 t_AVL *creer_t_AVL(int nbcoul, int nblig);
 
@@ -21,5 +21,7 @@ void liberer_t_AVL(t_AVL *tavl);
 void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *v);
 
 void algorithme_AVL(Grille *G, Solution *S);
+
+void AVLrechercheJ(AVL *b, int jr, int *jres, int *dtmp);
 
 #endif

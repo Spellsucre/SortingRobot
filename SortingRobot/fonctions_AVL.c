@@ -6,18 +6,21 @@
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-int max(int a, int b){
-    return (b>a?b:a);
-}
+int max(int a, int b){ return b>a?b:a ; }
+int min(int a, int b){ return a>b?b:a ; }
 
-int min(int a, int b){
-    return (a>b?b:a);
-}
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int distJ(int a, int b){
-    int d=a-b;
+    int d = a-b;
     return (d<0?-d:d);
 }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+int hauteur(AVL *b){
+    if (!b)	return -1;
+    return b->hauteur;
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void maj_hauteur(AVL *b){
     if (!b) return;
@@ -32,50 +35,48 @@ void maj_hauteur(AVL *b){
     int hg=0, hd=0;
     if (b->fg) hg = b->fg->hauteur;
     if (b->fd) hd = b->fd->hauteur;
-    b->hauteur = max(hg, hd) + 1;
+    b->hauteur = max(hg, hd) + 1 ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AVL *rotG(AVL *b){
-    AVL *nvb = b->fd;
+AVL *rotD(AVL *rac){
+    AVL *nvrac = rac->fg;
     
-    b->fd = nvb->fg;
-    nvb->fg = b;
+    rac->fg = nvrac->fd;
+    nvrac->fd = rac;
     
-    maj_hauteur(b);
-    maj_hauteur(nvb);
+    maj_hauteur(rac);
+    maj_hauteur(nvrac);
     
-    return nvb;
+    return nvrac;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AVL *rotD(AVL *b){
-    AVL *nvb = b->fg;
+AVL *rotG(AVL *rac){
+    AVL *nvrac = rac->fd;
     
-    b->fg = nvb->fd;
-    nvb->fd = b;
+    rac->fd = nvrac->fg;
+    nvrac->fg = rac;
     
-    maj_hauteur(b);
-    maj_hauteur(nvb);
+    maj_hauteur(rac);
+    maj_hauteur(nvrac);
     
-    return nvb;
+    return nvrac;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AVL *equilibreAVL(AVL *b){
 	if (!b) return NULL;
 	
-    if ( b->fg && b->fd &&
-    	(b->fg->hauteur - b->fd->hauteur) == 2 ){
-        if ( b->fg->fg && b->fg->fd &&
-        	(b->fg->fg->hauteur) < (b->fg->fd->hauteur) ) b=rotG(b->fg);
+    if ( (hauteur(b->fg) - hauteur(b->fd)) == 2 ){
+        if (b->fg &&
+        	hauteur(b->fg->fg) < hauteur(b->fg->fd) ) b=rotG(b->fg);
         b=rotD(b);
     }
     
-    if ( b->fg && b->fd &&
-    	(b->fg->hauteur - b->fd->hauteur) == -2 ){
-        if ( b->fd->fg && b->fd->fd &&
-        	(b->fd->fg->hauteur) > (b->fd->fd->hauteur) ) b=rotD(b->fd);
+    if ( (hauteur(b->fg) - hauteur(b->fd)) == -2 ){
+        if (b->fd &&
+        	hauteur(b->fd->fg) > hauteur(b->fd->fd) ) b=rotD(b->fd);
         b=rotG(b);
     }
 	
@@ -121,19 +122,9 @@ AVL *insererAVL(AVL *b, int val){
     }
     
     maj_hauteur(b);
-    
     b = equilibreAVL(b);
     
     return b;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-AVL *rechercheAVL(AVL *b, int val){
-    if (!b) return NULL;
-    if (b->j == val) return b;
-    
-    if (b->j > val) return rechercheAVL(b->fg, val);
-    else return rechercheAVL(b->fd, val);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,7 +162,9 @@ AVL *supprimeAVL(AVL *b, int val){
         }
     }
     
+    //AVLtoDot(b, 100, val);
     res = equilibreAVL(res);
+    //AVLtoDot(b, 101, val);
     
     return res;
 }
@@ -192,7 +185,6 @@ void libererAVL(AVL *b){
 	free(b);
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void nodeToDot(AVL *b, FILE *f){
 	if (!b) return;
@@ -210,11 +202,11 @@ void nodeToDot(AVL *b, FILE *f){
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void AVLtoDot(AVL *b, int i){
+void AVLtoDot(AVL *b, int i, int j){
 	if (!b) { printf("Arbre vide, conversion .dot impossible\n"); return; }
 	char str_dot[32], str_ps[32], str[256];
-	sprintf(str_dot, "graphviz/graph_%d.dot", i);
-	sprintf(str_ps, "graphviz/graph_%d.ps", i);
+	sprintf(str_dot, "graphviz/graph_%d_%d.dot", i, j);
+	sprintf(str_ps, "graphviz/graph_%d_%d.ps", i, j);
 	
 	FILE *f = fopen(str_dot, "w");
 	fprintf(f, "graph G {\n\tnode [shape=circle];\n");

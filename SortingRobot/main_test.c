@@ -15,6 +15,7 @@ int main(int argc, char** argv){
 	int graine, version;
 	clock_t t0, t1;
 	double d1;
+	char str[256];
 	
 	char *modeRecherche[] = { "tampon",
 							"recherche_naive",
@@ -91,6 +92,12 @@ int main(int argc, char** argv){
 		printf("\nL'algorithme a gagne en %d pas\n", S.cptr_pas);
 		printf("\nEcriture de la solution sur disque\n");
 		Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
+		
+		sprintf(str, "mv Robot_%d_%d_%d_%d.sol Robot_%d_%d_%d_%d_%d.sol ",
+								G.m, G.n, G.nbcoul, graine,
+								G.m, G.n, G.nbcoul, graine, version==4?4:0);
+		system(str);
+		
 	}else{
 		printf("\nAlgo version %d NOK\n\n", version);
 	}
