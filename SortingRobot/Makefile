@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: test_AVL main_test clean2 #Game_SortingRobot Checker_SortingRobot gnuplot
+all: main_test main_p1 clean2 #Game_SortingRobot Checker_SortingRobot test_AVL gnuplot 
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -23,7 +23,7 @@ Game_SortingRobot: Game_SortingRobot.o API_AffGrille.o Grille.o Solution.o entre
 Checker_SortingRobot.o: Checker_SortingRobot.c Grille.h API_AffGrille.h Solution.h
 	gcc -c Checker_SortingRobot.c
 
-Checker_SortingRobot: Checker_SortingRobot.o  API_AffGrille.o Grille.o Solution.o entree_sortie.o
+Checker_SortingRobot: Checker_SortingRobot.o API_AffGrille.o Grille.o Solution.o entree_sortie.o
 	gcc -o Checker_SortingRobot Checker_SortingRobot.o  API_AffGrille.o Grille.o Solution.o entree_sortie.o -lSDL
 
 
@@ -53,6 +53,13 @@ main_test: main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Sol
 	gcc $(CFLAGS) -o main_test main_test.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o fonctions_AVL.o methode_AVL.o -lm
 
 
+main_p1.o: main_p1.c
+	gcc $(CFLAGS) -c main_p1.c
+	
+main_p1: main_p1.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o fonctions_AVL.o methode_AVL.o
+	gcc $(CFLAGS) -o main_p1 main_p1.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o fonctions_AVL.o methode_AVL.o -lm
+
+
 test_AVL.o: test_AVL.c
 	gcc $(CFLAGS) -c test_AVL.c
 	
@@ -63,14 +70,11 @@ test_AVL: test_AVL.o fonctions_AVL.o
 gnuplot.o: gnuplot.c
 	gcc $(CFLAGS) -c gnuplot.c
 
-gnuplot: gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o
-	gcc $(CFLAGS) -o gnuplot gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o
-	
+gnuplot: gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o fonctions_AVL.o methode_AVL.o
+	gcc $(CFLAGS) -o gnuplot gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o fonctions_AVL.o methode_AVL.o
 	
 
 clean2:
 	rm *.o 
-	
-	
 	
 

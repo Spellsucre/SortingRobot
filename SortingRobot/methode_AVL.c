@@ -9,7 +9,7 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 t_AVL *creer_t_AVL(int nbcoul, int nblig){
-	int c;
+	int c, i;
 	
 	// malloc de t_AVL*
 	t_AVL *tavl = malloc( sizeof(t_AVL) );
@@ -23,6 +23,13 @@ t_AVL *creer_t_AVL(int nbcoul, int nblig){
 	for (c=0; c<nbcoul; c++){
 		tavl->M[c] = malloc( sizeof(AVL*) * nblig );
 		if (!tavl->M[c]) { printf("Erreur lors de l'allocation"); return NULL; }
+	}
+	
+	//init des AVL* à NULL
+	for (c=0; c<nbcoul; c++){
+		for (i=0; i<nblig; i++){
+			tavl->M[c][i] = NULL;
+		}
 	}
 
 	return tavl;
@@ -80,14 +87,17 @@ void AVLrechercheJ(AVL *b, int jr, int *jres, int *dtmp){
 void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *v){
 	if (!tavl){ printf("tavl non existant"); return; }
 	
-	int cpt=0, dMin, jtmp, dCour, dtmp;
+	int cpt=0, dMin, jtmp, dCour, dtmp, dInf;
 	AVL *cour;
 
 	*u = tavl->nblig * tavl->nblig;		*v = tavl->nblig * tavl->nblig;
-	dMin = distance(k,l,*u,*v);
 	
+	dInf = distance(k,l,*u,*v);
+	dMin = dInf;
 	
-	while (k-cpt >= 0 || k+cpt < tavl->nblig){
+	while ( k-cpt >= 0 || k+cpt < tavl->nblig ){
+		
+		//if ( dMin!=dInf && max(k+cpt, k-cpt) > dMin ) break;
 		
 		// cas 1: k-cpt
 		if (k-cpt >= 0){
@@ -123,9 +133,14 @@ void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *
 			}
 		}
 		
+		printf("cpt = %d,    dMin = %d,    res = (%d, %d)\n", cpt, dMin, *u, *v);
+		
 		cpt++;
+		
+		
 	}
 	
+	printf("\n");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -6,6 +6,7 @@
 #include "methode_naive.h"
 #include "methode_circulaire.h"
 #include "methode_LDC.h"
+#include "methode_AVL.h"
 
 FILE *f;
 clock_t t0, t1;
@@ -19,7 +20,7 @@ void methode_naive(){
 	f = fopen("courbes/temps_naif.dat", "w");
 	fprintf(f, "#nbCoul=tailleGrille\n#nbCases, d (naif)\n");
 	
-	for (tailleGrille=4; (int)d < 40; tailleGrille+=5){
+	for (tailleGrille=4; (int)d < 40; tailleGrille+=20){
 		Solution_init(&S);
 		G.m=tailleGrille; G.n=tailleGrille;
 		G.nbcoul= tailleGrille;
@@ -32,7 +33,7 @@ void methode_naive(){
 		d = ((double)(t1-t0))/CLOCKS_PER_SEC;
 		
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
-		printf("n | tailleGrille = %d, d = %f\n", tailleGrille, d);
+		printf("recherche naive | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
 		freeGrille(&G);
 		//freeSol(&S);
@@ -46,7 +47,7 @@ void methode_circulaire(){
 	f = fopen("courbes/temps_circ_.dat", "w");
 	fprintf(f, "#nbCoul=tailleGrille\n#nbCases, d (circ)\n");
 	
-	for (tailleGrille=4; (int)d < 40; tailleGrille+=5){
+	for (tailleGrille=4; (int)d < 40; tailleGrille+=30){
 		Solution_init(&S);
 		G.m=tailleGrille; G.n=tailleGrille;
 		G.nbcoul = tailleGrille;
@@ -59,7 +60,7 @@ void methode_circulaire(){
 		d = ((double)(t1-t0))/CLOCKS_PER_SEC;
 		
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
-		printf("c | tailleGrille = %d, d = %f\n", tailleGrille, d);
+		printf("recherche circulaire | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
 		freeGrille(&G);
 		//freeSol(&S);
@@ -151,10 +152,10 @@ void methode_circulaire_4(){
 
 void methode_LDC(){
 	d=0.0;
-	f = fopen("courbes/temps_LDC.dat", "w");
+	f = fopen("courbes/temps_LDC_test.dat", "w");
 	fprintf(f, "#nbCoul=N=M\n#nbCases, d (LDC)\n");
 	
-	for (tailleGrille=4; (int)d < 2; tailleGrille+=30){
+	for (tailleGrille=4; (int)d < 1; tailleGrille+=100){
 		Solution_init(&S);
 		G.m=tailleGrille; G.n=tailleGrille;
 		G.nbcoul= tailleGrille;
@@ -167,7 +168,7 @@ void methode_LDC(){
 		d = ((double)(t1-t0))/CLOCKS_PER_SEC;
 		
 		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
-		printf("c | tailleGrille = %d, d = %f\n", tailleGrille, d);
+		printf("recherche LDC | tailleGrille = %d, d = %f\n", tailleGrille, d);
 		
 		freeGrille(&G);
 		
@@ -178,6 +179,40 @@ void methode_LDC(){
 	fclose(f);
 }
 
+void methode_AVL(){
+	d=0.0;
+	f = fopen("courbes/temps_AVL.dat", "w");
+	fprintf(f, "#nbCoul=N=M\n#nbCases, d (AVL)\n");
+	
+	
+	for (tailleGrille=4; (int)d < 40; tailleGrille+=50){
+		Solution_init(&S);
+		G.m=tailleGrille; G.n=tailleGrille;
+		G.nbcoul= tailleGrille;
+		Grille_allocation(&G);
+		Gene_Grille(&G, 1);
+	
+		t0 = clock();
+		algorithme_AVL(&G, &S);
+		t1 = clock();
+		d = ((double)(t1-t0))/CLOCKS_PER_SEC;
+		
+		fprintf(f, "%d\t%f\n", tailleGrille*tailleGrille, d);
+		printf("recherche AVL | tailleGrille = %d, d = %f\n", tailleGrille, d);
+		
+		//freeGrille(&G);
+		
+		
+		//sfreeSol(&S);
+	}
+	
+	
+	
+		
+		
+	fclose(f);
+}
+
 
 int main(){
 	//methode_naive();
@@ -185,6 +220,8 @@ int main(){
 	//methode_circulaire_2();
 	//methode_circulaire_3();
 	//methode_circulaire_4();
-	methode_LDC();
+	//methode_LDC();
+	methode_AVL();
+	
 	return 0;
 }
