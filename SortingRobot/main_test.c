@@ -9,7 +9,6 @@
 #include "methode_AVL.h"
 
 int main(int argc, char** argv){
-    
 	Grille G;
 	Solution S;
 	int graine, version;

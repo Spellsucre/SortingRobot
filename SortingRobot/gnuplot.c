@@ -158,7 +158,7 @@ void methode_LDC(){
 	for (tailleGrille=4; (int)d < 1; tailleGrille+=100){
 		Solution_init(&S);
 		G.m=tailleGrille; G.n=tailleGrille;
-		G.nbcoul= tailleGrille;
+		G.nbcoul= 10;
 		Grille_allocation(&G);
 		Gene_Grille(&G, 1);
 	
@@ -185,10 +185,10 @@ void methode_AVL(){
 	fprintf(f, "#nbCoul=N=M\n#nbCases, d (AVL)\n");
 	
 	
-	for (tailleGrille=4; (int)d < 40; tailleGrille+=50){
+	for (tailleGrille=4; (int)d < 40; tailleGrille+=100){
 		Solution_init(&S);
 		G.m=tailleGrille; G.n=tailleGrille;
-		G.nbcoul= tailleGrille;
+		G.nbcoul= 10;
 		Grille_allocation(&G);
 		Gene_Grille(&G, 1);
 	
@@ -220,7 +220,7 @@ int main(){
 	//methode_circulaire_2();
 	//methode_circulaire_3();
 	//methode_circulaire_4();
-	//methode_LDC();
+	methode_LDC();
 	methode_AVL();
 	
 	return 0;

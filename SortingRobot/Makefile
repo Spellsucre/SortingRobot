@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: main_test main_p1 clean2 #Game_SortingRobot Checker_SortingRobot test_AVL gnuplot 
+all: main_graphe main_test main_p1 test_AVL gnuplot clean2 #Game_SortingRobot Checker_SortingRobot 
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -72,7 +72,22 @@ gnuplot.o: gnuplot.c
 
 gnuplot: gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o fonctions_AVL.o methode_AVL.o
 	gcc $(CFLAGS) -o gnuplot gnuplot.o fonctions_base.o methode_naive.o methode_circulaire.o Solution.o Grille.o entree_sortie.o methode_LDC.o fonctions_AVL.o methode_AVL.o
+
+
+
+ListeDC.o: ListeDC.c
+	 gcc $(CFLAGS) -c ListeDC.c
+
+Graphe.o: Graphe.c
+	gcc $(CFLAGS) -c Graphe.c
+
+main_graphe.o: main_graphe.c Graphe.c Graphe.h
+	gcc $(CFLAGS) -c main_graphe.c
+
+main_graphe: main_graphe.o Graphe.o ListeDC.o Grille.o
+	gcc $(CFLAGS) -o main_graphe main_graphe.o Graphe.o ListeDC.o Grille.o
 	
+
 
 clean2:
 	rm *.o 

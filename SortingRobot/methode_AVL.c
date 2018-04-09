@@ -79,8 +79,16 @@ void AVLrechercheJ(AVL *b, int jr, int *jres, int *dtmp){
 		*dtmp = dCour;
 	}
 
+/*
 	AVLrechercheJ(b->fg, jr, jres, dtmp);
 	AVLrechercheJ(b->fd, jr, jres, dtmp);
+*/
+
+	if (jr < b->j)
+		AVLrechercheJ(b->fg, jr, jres, dtmp);
+	else
+		AVLrechercheJ(b->fd, jr, jres, dtmp);
+	
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,7 +105,7 @@ void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *
 	
 	while ( k-cpt >= 0 || k+cpt < tavl->nblig ){
 		
-		//if ( dMin!=dInf && max(k+cpt, k-cpt) > dMin ) break;
+		//if ( dMin!=dInf && cpt > dMin ) break;
 		
 		// cas 1: k-cpt
 		if (k-cpt >= 0){
@@ -133,14 +141,14 @@ void AVLrechercherPlusProcheCase(t_AVL *tavl, int c, int k, int l, int *u, int *
 			}
 		}
 		
-		printf("cpt = %d,    dMin = %d,    res = (%d, %d)\n", cpt, dMin, *u, *v);
+		//printf("cpt = %d,    dMin = %d,    res = (%d, %d)\n", cpt, dMin, *u, *v);
 		
 		cpt++;
 		
 		
 	}
 	
-	printf("\n");
+	//printf("\n");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,7 +157,6 @@ void algorithme_AVL(Grille *G, Solution *S){
 	if (!S){ printf("Solution NULL, fin algo AVL"); return; }
 	
 	int c, u, v;
-	
 	// création et initialisation de tavl
 	t_AVL *tavl = initialiser_t_AVL(G);
 
@@ -157,17 +164,17 @@ void algorithme_AVL(Grille *G, Solution *S){
 	while ( !grilleTerminee(G) ){
 		if ( !robotPortePiece(G) ){
 			RechercherCaseCirculaire_nn(G, G->ir, G->jr, &u, &v);
-			PlusCourtChemin(S, G->ir, G->jr, u, v);
+			//PlusCourtChemin(S, G->ir, G->jr, u, v);
 			changement_case(G, u, v);
 		} else {
 			c = getCouleurPieceRobot(G);
-			AVLrechercherPlusProcheCase(tavl, c, G->ir, G->jr, &u, &v);
-			PlusCourtChemin(S, G->ir, G->jr, u, v);
+			AVLrechercherPlusProcheCase(tavl, c, G->ir, G->jr, &u, &v);			
+			//PlusCourtChemin(S, G->ir, G->jr, u, v);
 			changement_case(G, u, v);
 			tavl->M[c][u] = supprimeAVL(tavl->M[c][u], v);
 		}
 		swap_case(G);
-		Ajout_action( S, 'S');
+		//Ajout_action( S, 'S');
 	}
 	
 	liberer_t_AVL(tavl);

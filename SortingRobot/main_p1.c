@@ -9,18 +9,24 @@
 #include "methode_AVL.h"
 
 //codes couleur shell
-#define CY "\x1b[33m"	
-#define CR "\x1b[0m"
-
+	
+#define CW "\x1b[0m"
+#define CR "\x1b[31m"
+#define CG "\x1b[32m"
+#define CB "\x1b[34m"
+#define CY "\x1b[33m"
 
 void menu(){
-	printf(CY"\n0: entrer une nouvelle grille\n");
-	printf("1: naif\n");
-	printf("2: circulaire\n");
+	printf(CY"\n===============SORTING ROBOT===============\n");
+	printf(CG"0: Entrer une nouvelle grille\n");
+	printf(CY"- - - - -\n");
+	printf(CB"1: Naif\n");
+	printf("2: Circulaire\n");
 	printf("3: LDC\n");
 	printf("4: AVL\n");
-	printf("- - - - -\n");
-	printf("5: quitter\n\n"CR);
+	printf(CY"- - - - -\n");
+	printf(CR"5: Quitter\n");
+	printf(CY"===========================================\n\n"CW);
 }
 
 
@@ -154,7 +160,7 @@ int main (){
 		}
 	
 	} while (choix != 5);
-	
+	return 0;
 }
 
 
