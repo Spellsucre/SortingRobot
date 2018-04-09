@@ -51,5 +51,20 @@ PARTIE 1 : Algorithme "au plus proche"
 ----------------------------------------------------------------------------------------------------
 	
 2. Recherche par Couleur :
+    
+    Q 3.2 On parcourt simplement la liste chainée, et on fait une recherche de la distance minimum (une simple recherche du minimum avec un critère différent). La liste étant initialisée en partant de haut en bas puis de gauche à droite, on a bien la première case la plus proche qui correspond à la case la plus proche du robot avec le plus petit indice de ligne puis de colonne.
+    
+    Q 3.3 On initialise le tableau avec les cases non noires de la Grille, et on les supprime quand on les trouve. Ce qui fait que l'algorithme termine, car comme les cases marchent forcément par paire, l'algortihme LDCrechercherPlusProcheCase renvoie toujours une case valide.
+    
+    Q 3.4 CF Graphes.
+    
+    Q 3.5 La complexité pire cas se fait en fonction du nombre de cases et de couleur. En supposant que la Grille comporte un nombre équivalent k de cases de la même couleur, on a du k*n en complexité. Le pire des cas est d'avoir 2 couleurs et aucune case noire au début, ce qui nous donne une complexité en n².
+    
+ ----------------------------------------------------------------------------------------------------
 	
+2. Recherche par AVL :   
+	
+	Q 4.6
+	
+	Q 4.7
 
