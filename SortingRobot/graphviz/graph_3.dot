@@ -1,8 +1,0 @@
-graph G {
-	node [shape=circle];
-	150--100;
-	150--206;
-	150 [label="150\nh=1"];
-	100 [label="100\nh=0", color=blue];
-	206 [label="206\nh=0", color=blue];
-}

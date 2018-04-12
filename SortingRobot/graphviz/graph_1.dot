@@ -1,4 +1,0 @@
-graph G {
-	node [shape=circle];
-	150 [label="150\nh=1", color=blue];
-}
