@@ -1,0 +1,12 @@
+graph G {
+	node [shape=circle];
+	161--150;
+	161--168;
+	161 [label="161\nh=2"];
+	150--100;
+	150 [label="150\nh=1"];
+	100 [label="100\nh=0", color=blue];
+	168--281;
+	168 [label="168\nh=1"];
+	281 [label="281\nh=0", color=blue];
+}
