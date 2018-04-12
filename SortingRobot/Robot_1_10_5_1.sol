@@ -1,0 +1,2 @@
+1 10 5 1
+R S R R S R R S L L L L S R R R S R R R R S R S L L L L L S 0

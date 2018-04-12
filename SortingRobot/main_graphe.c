@@ -2,6 +2,8 @@
 #include <stdlib.h>
 
 #include "Graphe.h"
+#include "circuits.h"
+#include "Lcircuit.h"
 
 
 int main(int argc, char** argv){
@@ -32,7 +34,14 @@ int main(int argc, char** argv){
 	Graphe_creation(&G, H);
 	Graphe_affiche(H);
 
-
+    printf("\n\n");
+    
+    Lcircuit *Lcirc=Graphe_Rech_Circuit(H);
+    Lcircuitafficher(Lcirc);
+        
+    printf("Fini.\n\n");
+    
+    Graphe_affiche(H);
 	return 0;	
 }
 

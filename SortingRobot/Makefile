@@ -81,13 +81,19 @@ ListeDC.o: ListeDC.c
 Graphe.o: Graphe.c
 	gcc $(CFLAGS) -c Graphe.c
 
+circuits.o: circuits.c circuits.h
+	gcc $(CFLAGS) -c circuits.c 
+
+Lcircuit.o: Lcircuit.c Lcircuit.h
+	gcc $(CFLAGS) -c Lcircuit.c 
+
 main_graphe.o: main_graphe.c Graphe.c Graphe.h
 	gcc $(CFLAGS) -c main_graphe.c
 
-main_graphe: main_graphe.o Graphe.o ListeDC.o Grille.o
-	gcc $(CFLAGS) -o main_graphe main_graphe.o Graphe.o ListeDC.o Grille.o
+main_graphe: main_graphe.o Graphe.o ListeDC.o Grille.o circuits.o Lcircuit.o
+	gcc $(CFLAGS) -o main_graphe main_graphe.o Graphe.o ListeDC.o Grille.o circuits.o Lcircuit.o
+		 
 	
-
 
 clean2:
 	rm *.o 

@@ -45,9 +45,12 @@ void Graphe_creation(Grille *G, Graphe *H){
   LDC* TC=(LDC*) malloc(sizeof(LDC)*G->nbcoul);
   
   for (i=0;i<G->m;i++)
-	for (j=0;j<G->n;j++)
+	for (j=0;j<G->n;j++){
 	  if (G->T[i][j].fond!=G->T[i][j].piece)
 	LDCInsererEnTete(&TC[G->T[i][j].fond],i,j);
+	  else
+	    H->Tsom[i][j]->visit=-2;
+	}
 
   for (k=0;k<G->nbcoul;k++){
 	cour1=TC[k].premier;
@@ -74,7 +77,7 @@ void Graphe_affiche(Graphe *H){
 	printf("Graphe H :\n");
 	for (i=0; i<H->m; i++){
 		for (j=0; j<H->n; j++){
-			printf("(%d,%d) ", i, j);
+			printf("(%d,%d) status : %d ", i, j, H->Tsom[i][j]->visit);
 			if (H->Tsom[i][j]->Lsucc==NULL){
 				printf(" noir\n");
 			} else {
