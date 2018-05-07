@@ -1,0 +1,26 @@
+plot "temps_LDC_2.dat" using 1:2 with line title "nbCoul = 10" lt rgb "red"
+
+replot "temps_LDC.dat" using 1:2 with line title "nbCoul = n" lt rgb "blue"
+
+replot "temps_LDC_3.dat" using 1:2 with line title "nbCoul = n^2" lt rgb "green"
+
+
+
+replot 30 with line linetype 0 title ""
+replot "guid_LDC.dat" using 1:2 with line linetype 0 title ""
+
+set title "Temps de calcul de la méthode de recherche LDC"
+set autoscale
+set xrange [0 : 8200]
+set xlabel "Taille de la grille"
+set ylabel "Temps (s)"
+
+replot
+
+#saving to .png
+set term png
+set output "graph_LDC.png"
+replot
+
+
+# gnuplot > load 'monFichier'

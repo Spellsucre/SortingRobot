@@ -1,0 +1,30 @@
+plot "temps_naif_3.dat" using 1:2 with line title "recherche naive" lt rgb "blue"
+
+replot "temps_circ_3.dat" using 1:2 with line title "recherche circulaire" lt rgb "red"
+
+replot "temps_LDC_3.dat" using 1:2 with line title "recherche LDC" lt rgb "green"
+
+#replot "temps_AVL_3.dat" using 1:2 with line title "recherche AVL" lt rgb "orange"
+
+
+
+
+
+replot 30 with line linetype 0 title ""
+#replot "guid.dat" using 1:2 with line linetype 0 title ""
+
+set title "Temps de calcul en fonction de la\nméthode de recherche utilisée"
+set autoscale
+#set xrange [0 : 2200]
+set xlabel "Taille de la grille"
+set ylabel "Temps (s)"
+
+replot
+
+#saving to .png
+set term png
+set output "graph_4_courbes_3.png"
+replot
+
+
+# gnuplot > load 'monFichier'

@@ -162,17 +162,17 @@ void algorithme_parcouleur(Grille *G, Solution *S){
     while ( !grilleTerminee(G) ){
 		if( !robotPortePiece(G) ){
 		    RechercherCaseCirculaire_nn( G, G->ir, G->jr, &k, &l );
-		    PlusCourtChemin( S, G->ir, G->jr, k, l);
+		    //PlusCourtChemin( S, G->ir, G->jr, k, l);
 		    changement_case(G, k, l);
 		}else{
 			target = LDCrechercherPlusProcheCase(TC[getCouleurPieceRobot(G)], G->ir, G->jr);
-			PlusCourtChemin( S, G->ir, G->jr, target->i, target->j);
+			//PlusCourtChemin( S, G->ir, G->jr, target->i, target->j);
 			changement_case(G, target->i, target->j);
 			indice = getCouleurPieceRobot(G);
 			LDCEnleverCellule(TC[indice], target);
 		}
 		swap_case(G);
-		Ajout_action( S, 'S');
+		//Ajout_action( S, 'S');
     }
     
     for (q=0; q<G->nbcoul; q++){

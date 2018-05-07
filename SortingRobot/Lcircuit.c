@@ -41,19 +41,23 @@ void LcircuitInsererEnFin(Lcircuit* Lcircuit, LDC *L){
     Lcircuit->dernier->suiv=nouv;
   nouv->suiv=NULL;
   Lcircuit->dernier=nouv;
+  
+  Lcircuit->nb_circuit++;
 }
 
 void LcircuitenleverCellule(Lcircuit* Lcircuit, Cell_circuit* c){
   free(c);
+  Lcircuit->nb_circuit--;
 }
 
 void Lcircuitafficher(Lcircuit* Lcircuit){
-  Cell_circuit* cour= Lcircuit->premier;
-  while(cour != NULL) {
-    LDCafficher(&(cour->L));
-    cour=cour->suiv;
-  }
-  printf("\n");
+	Cell_circuit* cour= Lcircuit->premier;
+	while(cour != NULL) {
+		printf("jmin=%d jmax=%d : ", cour->jmin, cour->jmax);
+		LDCafficher(&(cour->L));
+		cour=cour->suiv;
+	}
+	printf("\n");
 }
 
 void Lcircuitdesalloue(Lcircuit *Lcircuit){

@@ -1,6 +1,6 @@
 CFLAGS=-Wall -g
 
-all: main_graphe main_test main_p1 test_AVL gnuplot clean2 #Game_SortingRobot Checker_SortingRobot 
+all: daniel_graf clean2 #main_graphe main_test main_p1 test_AVL gnuplot Game_SortingRobot Checker_SortingRobot 
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -92,6 +92,16 @@ main_graphe.o: main_graphe.c Graphe.c Graphe.h
 
 main_graphe: main_graphe.o Graphe.o ListeDC.o Grille.o circuits.o Lcircuit.o
 	gcc $(CFLAGS) -o main_graphe main_graphe.o Graphe.o ListeDC.o Grille.o circuits.o Lcircuit.o
+	
+	
+daniel_graf.o: daniel_graf.c daniel_graf.h
+	gcc $(CFLAGS) -c daniel_graf.c
+
+main_daniel_graf.o: main_daniel_graf.c
+	gcc $(CFLAGS) -c main_daniel_graf.c
+	
+daniel_graf: main_daniel_graf.o daniel_graf.o Solution.o Grille.o entree_sortie.o fonctions_base.o Graphe.o circuits.o Lcircuit.o ListeDC.o
+	gcc $(CFLAGS) -o main_daniel_graf main_daniel_graf.o daniel_graf.o entree_sortie.o Solution.o Grille.o fonctions_base.o Graphe.o circuits.o Lcircuit.o ListeDC.o
 		 
 	
 

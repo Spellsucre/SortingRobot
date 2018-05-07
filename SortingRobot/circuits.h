@@ -6,11 +6,12 @@
 #include "Lcircuit.h"
 
 
-
-
-void recherche_circuit_sommet(Sommet *s,Sommet *init);
+void recherche_circuit_sommet(Sommet *s, Sommet *init, LDC *L);
 
 Lcircuit *Graphe_Rech_Circuit(Graphe *h);
+
+void CalculJminJmax(Lcircuit *LC);
+
 
 #endif
 

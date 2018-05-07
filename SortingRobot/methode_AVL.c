@@ -79,11 +79,6 @@ void AVLrechercheJ(AVL *b, int jr, int *jres, int *dtmp){
 		*dtmp = dCour;
 	}
 
-/*
-	AVLrechercheJ(b->fg, jr, jres, dtmp);
-	AVLrechercheJ(b->fd, jr, jres, dtmp);
-*/
-
 	if (jr < b->j)
 		AVLrechercheJ(b->fg, jr, jres, dtmp);
 	else

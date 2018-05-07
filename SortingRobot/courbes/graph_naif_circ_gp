@@ -1,0 +1,29 @@
+plot "temps_naif.dat" using 1:2 with line title "naive_1" lt rgb "blue"
+
+replot "temps_circ.dat" using 1:2 with line title "circulaire_1" lt rgb "red"
+
+
+replot "temps_naif_2.dat" using 1:2 with line title "naive_2" lt rgb "cyan"
+
+replot "temps_circ_2.dat" using 1:2 with line title "circulaire_2" lt rgb "orange"
+
+
+
+replot 30 with line linetype 0 title ""
+replot "guid_1.dat" using 1:2 with line linetype 0 title ""
+
+set title "Temps de calcul en fonction de la\nméthode de recherche utilisée"
+set autoscale
+set xrange [0 : 400]
+set xlabel "Taille de la grille"
+set ylabel "Temps (s)"
+
+replot
+
+#saving to .png
+set term png
+set output "graph_naif_circ.png"
+replot
+
+
+# gnuplot > load 'monFichier'

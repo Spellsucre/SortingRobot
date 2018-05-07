@@ -1,0 +1,82 @@
+Grille: 1 10 10 0
+
+circuits: C
+1: jmin=0, jmax=6 : 0, 6
+2: jmin=1, jmax=9 : 1, 4, 5, 7, 9, 8, 2, 3
+
+
+> init
+
+### variables
+Cell_char *Tref[10]
+0: S R R R R R R S L L L L L [L] S
+1: NULL
+2: NULL
+3: NULL
+4: NULL
+5: NULL
+6: NULL
+7: NULL
+8: NULL
+9: NULL
+
+Jdroite = 6
+JdroiteSav = 0
+Drapeau = 1
+
+Sol: S R R R R R R S L L L L L L S
+
+> iter C=1 :
+*
+Tref[C->jmin=0]==NULL vrai
+Drapeau=1
+JdroiteSav=Jdroite=0
+Jdroite=0 =R=> C->jmin=0 : aucun
+Sol += rien
+
+*
+Sol += S R R R R R R S L L L L L L S
+Jdroite = C->jmax = 0->6
+Tref[jmin=0] = S R R R R R R S L L L L L [L] S
+
+*
+Drapeau==1 vrai
+Drapeau=0
+C->jmin=0 =L=> JdroiteSav=0 : aucun
+
+
+> iter C=2 :
+*
+Tref[C->jmin=1]==NULL vrai
+Drapeau=1
+JdroiteSav=Jdroite=0->6
+Jdroite=6 =R=> C->jmin=1 : aucun
+Sol += rien
+
+*
+Sol += S R R R S R S R R S R R S L S L L L L L L S R S L L S
+Jdroite = 6->9
+Tref[jmin=1] = S R R R S R S R R S R R S L S L L L L L L S R S L [L] S
+
+*
+Drapeau==1 vrai
+Drapeau=0
+C->jmin=1 =L=> JdroiteSav=6 : aucun
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
