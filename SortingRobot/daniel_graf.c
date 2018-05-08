@@ -8,70 +8,6 @@
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// prend en argument une Grille vecteur avec une case de couleur
-// retourne la Solution correspondante selon l'algo de Daniel Graf
-Solution *daniel_graf(Grille *G){
-	if (!G) { printf("Grille non initialisée\n"); return NULL; }
-
-	// tests de conditions sur la grille
-	if (G->m != 1) { printf("Il faut m=1\n"); return NULL; }
-	if (G->m*G->n != G->nbcoul) { printf("Il faut m*n=nbcoul\n"); return NULL; }
-	
-	
-	int i, Jdroite=0, JdroiteSav, Drapeau;
-	
-	// création du graphe H
-	Graphe *H = malloc( sizeof(Graphe) );
-	if (!H){ printf("Probleme d'allocation memoire\n"); return NULL; }
-	Graphe_creation(G, H);
-	
-	// création de LC, la liste des circuits de H
-	// avec calcul de jmin et jmax pour chaque circuit
-	// LC rangée par jmin croissants
-	Lcircuit *LC = Graphe_Rech_Circuit(H);
-	
-	// création d'une solution S vide
-	Solution *S = malloc( sizeof(Solution) );
-	if (S==NULL){
-		printf("Probleme d'allocation memoire\n");
-		return NULL;
-	}
-	Solution_init(S);
-	
-	// création de Tref, tab de pointeurs de n cases NULL
-	Cell_char **Tref = malloc( sizeof(Cell_char*) * G->n );
-	if (!Tref){	printf("Probleme d'allocation memoire\n"); return NULL;	}
-	for (i=0; i<G->n; i++) Tref[i] = NULL;	
-	
-	Cell_circuit *C = LC->premier;
-	while (C){	//parcours de la liste de circuits de LC (jmin croissants)
-		
-		if ( Tref[C->jmin] == NULL ){
-			Drapeau = 1;
-			JdroiteSav = Jdroite;
-			// insertion de 'R' dans S pemettant d'aller de Jdroite à C->jmin
-			// à la suite de Tref[Jdroite]
-			pluscourtchemin_apres_c(S, Tref[Jdroite], Jdroite, C->jmin, Tref);
-			Jdroite = C->jmin;
-		}
-		
-		// ajout seq deplacements de C dans S à la suite de Tref[C->jmin]
-		ajout_circuit_dans_solution(C, S, Tref[C->jmin], Tref, &Jdroite);
-
-		if (Drapeau){
-			Drapeau = 0;
-			// insertion de 'L' dans S pemettant d'aller de C->jmin à JdroiteSav
-			// à la suite de Tref[C->jmin], après l'action 'S'
-			pluscourtchemin_apres_c(S, Tref[C->jmin], C->jmin, JdroiteSav, Tref);
-		}
-			
-		C = C->suiv;
-	}
-	
-	return S;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ajoute a à la Solution S à la suite de c si non nul, en tete de S sinon
 // maj de Tref selon j
 Cell_char *ajout_action_apres_c(Solution *S, Cell_char *c,
@@ -146,8 +82,60 @@ void ajout_circuit_dans_solution(Cell_circuit *C, Solution *S, Cell_char *c,
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// prend en arguments une Grille vecteur (une case par couleur) et une Solution
+// maj de S selon l'algo de Daniel Graf appliqué à la grille G
 void algorithme_circuit_CasLigne1x1(Grille *G, Solution *S){
+	if (!G) { printf("Grille non initialisée\n"); return; }
+	if (!S) { printf("Solution non initialisée\n"); return; }
+
+	// tests de conditions sur la grille
+	if (G->m != 1) { printf("Il faut m=1\n"); return; }
+	if (G->m*G->n != G->nbcoul) { printf("Il faut m*n=nbcoul\n"); return; }
 	
+	
+	int i, Jdroite=0, JdroiteSav, Drapeau;
+	
+	// création du graphe H
+	Graphe *H = malloc( sizeof(Graphe) );
+	if (!H){ printf("Probleme d'allocation memoire\n"); return; }
+	Graphe_creation(G, H);
+	
+	// création de LC, la liste des circuits de H
+	// avec calcul de jmin et jmax pour chaque circuit
+	// LC rangée par jmin croissants
+	Lcircuit *LC = Graphe_Rech_Circuit(H);
+	
+	// création de Tref, tab de pointeurs de n cases NULL
+	Cell_char **Tref = malloc( sizeof(Cell_char*) * G->n );
+	if (!Tref){	printf("Probleme d'allocation memoire\n"); return;	}
+	for (i=0; i<G->n; i++) Tref[i] = NULL;	
+	
+	Cell_circuit *C = LC->premier;
+	while (C){	//parcours de la liste de circuits de LC (jmin croissants)
+		
+		if ( Tref[C->jmin] == NULL ){
+			Drapeau = 1;
+			JdroiteSav = Jdroite;
+			// insertion de 'R' dans S pemettant d'aller de Jdroite à C->jmin
+			// à la suite de Tref[Jdroite]
+			pluscourtchemin_apres_c(S, Tref[Jdroite], Jdroite, C->jmin, Tref);
+			Jdroite = C->jmin;
+		}
+		
+		// ajout seq deplacements de C dans S à la suite de Tref[C->jmin]
+		ajout_circuit_dans_solution(C, S, Tref[C->jmin], Tref, &Jdroite);
+
+		if (Drapeau){
+			Drapeau = 0;
+			// insertion de 'L' dans S pemettant d'aller de C->jmin à JdroiteSav
+			// à la suite de Tref[C->jmin], après l'action 'S'
+			pluscourtchemin_apres_c(S, Tref[C->jmin], C->jmin, JdroiteSav, Tref);
+		}
+			
+		C = C->suiv;
+	}
+	
+	printf("Calcul de la Solution selon l'algo de Daniel Graf avec réussi!\n");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

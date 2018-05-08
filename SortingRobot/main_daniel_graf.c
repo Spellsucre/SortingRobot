@@ -14,17 +14,9 @@
 
 int main (int argc, char *argv[]){
 	char commande[256];
-	
 	Grille G;
-	Solution *S= malloc( sizeof(Solution) );
-	if (S==NULL){
-		printf("Probleme d'allocation memoire\n");
-		return 1;
-	}
-	
 	int graine;
 	
-	Solution_init(S);
 	
     if(argc!=5){
         printf("usage: %s <nb_lignes nb_colonnes nb_couleur graine>\n", argv[0]);
@@ -49,8 +41,15 @@ int main (int argc, char *argv[]){
 	Grille_allocation(&G);
 	Gene_Grille(&G, graine);
 	
+	// création d'une solution S vide
+	Solution *S = malloc( sizeof(Solution) );
+	if (S==NULL){
+		printf("Probleme d'allocation memoire\n");
+		return 1;
+	}
+	Solution_init(S);
 	
-	S = daniel_graf( &G );
+	algorithme_circuit_CasLigne1x1( &G, S );
 	Affiche(S);
 	
 	// test de validité de la solution

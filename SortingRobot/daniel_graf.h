@@ -2,8 +2,6 @@
 #define __DANIEL_GRAF_H__
 
 
-Solution *daniel_graf(Grille *G);
-
 Cell_char *ajout_action_apres_c(Solution *S, Cell_char *c, int j, char a, Cell_char **Tref);
 
 Cell_char *pluscourtchemin_apres_c(Solution *S, Cell_char *c, int j, int l, Cell_char **Tref);
