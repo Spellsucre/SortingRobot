@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "fonctions_base.h"
 #include "Grille.h"
@@ -12,6 +13,7 @@
 
 
 int main (int argc, char *argv[]){
+	char commande[256];
 	
 	Grille G;
 	Solution *S= malloc( sizeof(Solution) );
@@ -49,16 +51,18 @@ int main (int argc, char *argv[]){
 	
 	
 	S = daniel_graf( &G );
-	
-	
 	Affiche(S);
 	
-	
-	
+	// test de validité de la solution
+	Ecriture_Disque(G.m, G.n, G.nbcoul, graine, S);
+	sprintf(commande, "./Checker_SortingRobot Robot_1_%d_%d_%d.sol 0 1", G.n, G.nbcoul, graine);
+	system(commande);	
+	sprintf(commande, "rm Robot_1_%d_%d_%d.sol", G.n, G.nbcoul, graine);
+	system(commande);
+
+
 	freeGrille(&G);
 	freeSol(S);
-	
-	printf("plop\n");
 	
 	return 0;
 }

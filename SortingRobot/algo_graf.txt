@@ -9,22 +9,22 @@ circuits: C
 
 ### variables
 Cell_char *Tref[10]
-0: S R R R R R R S L L L L L [L] S
-1: NULL
-2: NULL
-3: NULL
-4: NULL
-5: NULL
-6: NULL
+0: S R R R R R R S L L L L L .L S
+1: S R R R R R R S L L L L .L ici L S
+2: S R R R R R R S L L L .L L L S
+3: S R R R R R R S L L .L L L L S
+4: S R R R R R R S L .L L L L L S
+5: S R R R R R R S .L L L L L L S
+6: S R R R R R .R S L L L L L L S
 7: NULL
 8: NULL
 9: NULL
 
 Jdroite = 6
-JdroiteSav = 0
+JdroiteSav = 6
 Drapeau = 1
 
-Sol: S R R R R R R S L L L L L L S
+Sol: 
 
 > iter C=1 :
 *
@@ -47,11 +47,7 @@ C->jmin=0 =L=> JdroiteSav=0 : aucun
 
 > iter C=2 :
 *
-Tref[C->jmin=1]==NULL vrai
-Drapeau=1
-JdroiteSav=Jdroite=0->6
-Jdroite=6 =R=> C->jmin=1 : aucun
-Sol += rien
+Tref[C->jmin=1]==NULL faux
 
 *
 Sol += S R R R S R S R R S R R S L S L L L L L L S R S L L S
@@ -64,19 +60,9 @@ Drapeau=0
 C->jmin=1 =L=> JdroiteSav=6 : aucun
 
 
+mine 	S R S R S R S R S R R S R R R S L S L L L S R R S L L S L L L S L L S  
 
-
-
-
-
-
-
-
-
-
-
-
-
+theirs	S R R S R S R S R R S R R R S L S L L L S R R S L L S L L L L S S L S
 
 
 

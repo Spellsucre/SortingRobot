@@ -8,11 +8,11 @@
 void recherche_circuit_sommet(Sommet *s, Sommet *init, LDC *L){
     if (!s || !init) return;
     
-    //LDCInsererEnFin(L, s->i, s->j);
+    LDCInsererEnFin(L, s->i, s->j);
     
     if (s->visit==0 && s==init) return;
     
-    LDCInsererEnFin(L, s->i, s->j);
+    //LDCInsererEnFin(L, s->i, s->j);
     
     s->visit = 0;
         
