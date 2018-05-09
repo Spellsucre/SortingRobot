@@ -8,6 +8,7 @@ typedef struct sommet Sommet;
 typedef struct arete {
   struct sommet *succ;
   struct arete *suiv;
+  int poids;
 } Arc;
 
 struct sommet{

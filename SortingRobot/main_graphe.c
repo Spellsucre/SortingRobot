@@ -32,7 +32,7 @@ int main(int argc, char** argv){
 	
 	Graphe *H = malloc( sizeof(Graphe) );
 	Graphe_creation(&G, H);
-	//Graphe_affiche(H);
+	Graphe_affiche(H);
 
     Lcircuit *Lcirc=Graphe_Rech_Circuit(H);
     Lcircuitafficher(Lcirc);

@@ -30,6 +30,7 @@ void Graphe_init(Graphe *H, int m, int n){
 void Graphe_ajout_arc(Graphe *H, int i1, int j1, int i2, int j2){
   Arc *a=(Arc*) malloc(sizeof(Arc));
   a->succ=H->Tsom[i2][j2];
+  a->poids=(i2-i1<0?-(i2-i1):i2-i1)+(j2-j1<0?-(j2-j1):j2-j1);
   a->suiv=H->Tsom[i1][j1]->Lsucc;
   H->Tsom[i1][j1]->Lsucc=a;  
 }

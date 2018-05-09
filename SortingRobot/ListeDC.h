@@ -15,8 +15,6 @@ typedef struct {
   CelluleLDC* dernier;  /* Pointeur sur element en fin */
 } LDC;
 
-
-
 /* Alloue et retourne une cellule */
 CelluleLDC* creerCellule(int i, int j);
 
